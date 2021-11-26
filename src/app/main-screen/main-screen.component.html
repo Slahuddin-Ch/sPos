@@ -1,0 +1,56 @@
+<div class="main-screen">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-4">
+        <app-quantity (onQtyChange)="handleQty($event)" [state]=qty_statue></app-quantity>
+      </div>
+      <div class="col-4">
+        <app-product-list (onProductChoose)=handleProduct($event)></app-product-list>
+      </div>
+      <div class="col-4">
+        <div class="border receipt-container">
+          
+          <div class="receipt-header d-flex bg-primary text-white">
+            <div class="w-40 p-2 fw-bold">Product</div>
+            <div class="w-25 p-2 fw-bold">Qty</div>
+            <div class="w-auto p-2 fw-bold" colspan="2">Total</div>
+          </div>
+          <div class="receipt-table">
+            <table class="table w-100">
+              <tbody>
+                <ng-container *ngIf="cartList.length>0">
+                  <tr *ngFor="let item of cartList; let i=index">
+                    <td *ngIf="item" class="w-40">{{item.name}}</td>
+                    <td *ngIf="item" class="w-25">{{item.qty}}</td>
+                    <td *ngIf="item" class="w-25">{{item.qty*item.price}}</td>
+                    <td *ngIf="item" class="w-10"><button><i (click)="removeFromCart(item.id, i)" class="fas fa-trash text-danger"></i></button></td>
+                  </tr>
+                </ng-container>
+                <ng-container *ngIf="cartList.length===0">
+                  <tr><td colspan="4" class="w-100 text-center fs-3">Cart Empty</td></tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+          <div class="receipt-footer d-flex bg-primary text-white px-3">
+            <div class="flex-grow-1 p-2"><h5 class="m-0 fs-4">Total:</h5></div>
+            <div class="p-2"><h5 class="m-0 fs-4">£ {{total}}</h5></div>
+          </div>
+        </div>
+        <div class="checkout-buttons">
+          <button class="btn btn-info">EDIT</button>
+          <button class="btn btn-warning">RECEIPT</button>
+          <button class="btn btn-secondary">ENTER</button>
+          <button class="btn btn-primary">SUB-TOTAL</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Footer-->
+<div class="footer bg-dark h-100 text-white p-1">
+  <div class="container-fluid">
+    <p class="m-0 fs-5">Footer Text</p>
+  </div>
+</div>
