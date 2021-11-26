@@ -1,0 +1,37 @@
+
+
+.ripple:hover:before,
+.ripple:active:before,
+.ripple:focus:before{
+	animation: ripple 1s ease;
+}
+
+.ripple:before{
+	content:"";
+	position:absolute; top:0; left:0;
+	width:100%; height:100%;
+    background-color:var(--primary-rgba-30);
+    border-radius:100%;
+	transform:scale(0);
+}
+
+@keyframes ripple{
+	from{transform:scale(0); opacity:1;}
+	to{transform:scale(3);opacity:0;}
+}
+
+
+.product-container{
+    max-height: 90vh;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+
+
+
+
+
+
+
+

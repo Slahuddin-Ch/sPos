@@ -1,0 +1,71 @@
+<div class="container-fluid py-1">
+  <div class="row">
+    <div class="col-4">
+      <div class="qty-container">
+        <div class="input-group input-group-lg">
+          <span class="input-group-text text-uppercase">QTY</span>
+          <input type="number" class="form-control text-end" placeholder="0">
+        </div>
+        <div class="row qty-number-box text-center align-items-center">
+          <div class="col-4"><button class="qty-number ripple border">1</button></div>
+          <div class="col-4"><button class="qty-number ripple border">2</button></div>
+          <div class="col-4"><button class="qty-number ripple border">3</button></div>
+          <div class="col-4"><button class="qty-number ripple border">4</button></div>
+          <div class="col-4"><button class="qty-number ripple border">5</button></div>
+          <div class="col-4"><button class="qty-number ripple border">6</button></div>
+          <div class="col-4"><button class="qty-number ripple border">7</button></div>
+          <div class="col-4"><button class="qty-number ripple border">8</button></div>
+          <div class="col-4"><button class="qty-number ripple border">9</button></div>
+          <div class="col-4"><button class="qty-number bg-danger text-white ripple border">Clear</button></div>
+          <div class="col-4"><button class="qty-number ripple border">0</button></div>
+          <div class="col-4"><button class="qty-number ripple border">00</button></div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="col-4">
+      <div class="product-container">
+        <div class="row align-items-center">
+          <div class="col-4 mb-2" *ngFor="let number of [0,1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4,0,1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4,0,1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4]; let i=index">
+            <div class="product bg-primary text-white py-4 rounded text-center">P-{{i+1}}</div>
+          </div>
+        </div> 
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="border receipt-container">
+        <div class="receipt-header d-flex bg-primary text-white">
+          <div class="w-40 p-2">Product</div>
+          <div class="w-20 p-2">Qty</div>
+          <div class="w-20 p-2">Total</div>
+          <div class="w-20 p-2">Action</div>
+        </div>
+        <div class="receipt-table">
+          <table class="table w-100">
+            <tbody>
+              <tr *ngFor="let number of [0,1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4]; let i=index">
+                <td class="w-40">Product {{i+1}}</td>
+                <td class="w-20">1</td>
+                <td class="w-20">100</td>
+                <td class="w-20">D</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="receipt-footer bg-primary">
+          <div class="row align-items-center text-white">
+            <div class="col-8"><h3 class="p-2 m-0 fs-4">Total</h3></div>
+            <div class="col-4"><h3 class="p-2 m-0 fs-4">100</h3></div>
+          </div>
+        </div>
+      </div>
+      <div class="checkout-buttons">
+        <button class="btn btn-info">EDIT</button>
+        <button class="btn btn-warning">RECEIPT</button>
+        <button class="btn btn-secondary">ENTER</button>
+        <button class="btn btn-primary">SUB-TOTAL</button>
+      </div>
+    </div>
+  </div>
+</div>
+

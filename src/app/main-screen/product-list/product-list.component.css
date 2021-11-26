@@ -1,0 +1,10 @@
+.product-container{
+    height: calc(var(--main-screen) - var(--screen-padding));
+    overflow: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.product{
+    pointer-events: all;
+
+}
