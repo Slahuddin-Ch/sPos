@@ -1,0 +1,45 @@
+.sidebar,
+.tab{
+    height: var(--main-screen);
+    overflow-y: auto;
+}
+.sidebar li{margin-bottom: 10px;}
+.sidebar button{
+    width: 100%;
+    font-size: 28px;
+    background-color: var(--primary-rgba-30);
+    color: black;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    text-align: left;
+    padding: 5px 20px;
+}
+.sidebar button:focus,
+.sidebar button:hover,
+.sidebar button.active{
+    background-color: var(--primary);
+    color: white;
+}
+
+.tab .tab-heading{
+    max-height: 7%; 
+    height: 7%; 
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+.tab .tab-body{
+    max-height: 83%; 
+    height: 83%; 
+    overflow: hidden;
+}
+.tab .tab-footer{
+    max-height: 10%; 
+    height: 10%; 
+    overflow: hidden;
+}
+.tab .tab-footer button{
+    height: 100%;
+    width: calc(100%/4);
+}

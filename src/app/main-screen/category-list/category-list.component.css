@@ -1,0 +1,27 @@
+.category-container{
+    background-color: white;
+    padding: 7px;
+    border-radius: 10px;
+    height: calc(var(--main-screen));
+    overflow: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.category-container .category-list{
+    display: flex;
+    flex-wrap: wrap;
+}
+.category-container .category-list div{
+    flex-grow: 1;
+    margin: 1%;
+    width: calc(94%/3);
+    display: inline-block;
+}
+.category{
+    width: 100%;
+    outline: none;
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    font-size: 16px;
+}

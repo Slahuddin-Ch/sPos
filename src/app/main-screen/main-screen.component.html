@@ -1,47 +1,65 @@
-<div class="main-screen">
+<div class="pos-screen">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-4">
-        <app-quantity (onQtyChange)="handleQty($event)" [state]=qty_statue></app-quantity>
+      <div class="screen-col col-3">
+        <app-price (onPriceChange)="onPriceChange($event)" [state]=price></app-price>
+        <div class="button-container py-3">
+          <button routerLink="menu" class="btn btn-lg w-100 fs-2 btn-primary"><i class="fas fa-bars"></i> Menu</button>
+        </div>
       </div>
-      <div class="col-4">
-        <app-product-list (onProductChoose)=handleProduct($event)></app-product-list>
+      <div class="screen-col col-3">
+        <app-category-list (onCategoryChoose)=onCategoryChoose($event) [mode]=price.mode></app-category-list>
       </div>
-      <div class="col-4">
-        <div class="border receipt-container">
-          
-          <div class="receipt-header d-flex bg-primary text-white">
-            <div class="w-40 p-2 fw-bold">Product</div>
-            <div class="w-25 p-2 fw-bold">Qty</div>
-            <div class="w-auto p-2 fw-bold" colspan="2">Total</div>
+      <div class="screen-col col-6">
+        <div class="pos-cart-table border rounded">
+          <div class="thead d-flex bg-primary text-white p-2 px-2">
+            <div class="w-25">Product</div>
+            <div class="w-25 text-center">Quantity</div>
+            <div class="w-20 text-center">Price</div>
+            <div class="w-30">Total</div>
           </div>
-          <div class="receipt-table">
-            <table class="table w-100">
-              <tbody>
-                <ng-container *ngIf="cartList.length>0">
-                  <tr *ngFor="let item of cartList; let i=index">
-                    <td *ngIf="item" class="w-40">{{item.name}}</td>
-                    <td *ngIf="item" class="w-25">{{item.qty}}</td>
-                    <td *ngIf="item" class="w-25">{{item.qty*item.price}}</td>
-                    <td *ngIf="item" class="w-10"><button><i (click)="removeFromCart(item.id, i)" class="fas fa-trash text-danger"></i></button></td>
-                  </tr>
-                </ng-container>
-                <ng-container *ngIf="cartList.length===0">
-                  <tr><td colspan="4" class="w-100 text-center fs-3">Cart Empty</td></tr>
-                </ng-container>
-              </tbody>
-            </table>
+          <div class="tbody">
+            <ng-container *ngIf="cartList.length>0">
+              <div class="tr border-bottom d-flex py-2 align-items-center cart-item" *ngFor="let item of cartList; let i=index">
+                <div #cartItem class="w-30 ps-1">{{item.name}}</div>
+                <div class="w-15 ps-1">
+                  <div class="input-group input-group-sm quantity-counter" style="width: 100% !important;">
+                    <button [disabled]="item.qty===1 || is_edit.state" (click)="changeQuantity(i, 'minus')" class="btn btn-light" type="button"><i class="fas fa-minus"></i></button>
+                    <input disabled type="text" class="form-control border-none text-center bg-white" value="{{item.qty}}">
+                    <button [disabled]="is_edit.state" (click)="changeQuantity(i, 'add')" class="btn btn-light" type="button"><i class="fas fa-plus"></i></button>                 
+                  </div>
+                </div>
+                <div class="w-15 ps-1 text-center">{{item.price}}</div>
+                <div class="w-15 ps-1">{{item.price*item.qty | number}}</div>
+                <div class="w-25 px-1">
+                  <div class="d-flex">
+                    <div><button [disabled]="is_edit.state" class="edit-item text-primary" (click)="editCartItem(i)"><i class="fas fa-pencil-alt"></i> Edit</button></div>
+                    <div><button [disabled]="is_edit.state" class="delete-item ms-1 text-danger" (click)="removeFromCart(item.id, i)"><i class="fas fa-trash"></i> Delete</button></div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="cartList.length===0">
+              <div class="w-100 text-center fs-3 my-4 text-muted"><i class="fas fa-shopping-cart d-block"></i> Cart Empty</div>
+            </ng-container>
           </div>
-          <div class="receipt-footer d-flex bg-primary text-white px-3">
-            <div class="flex-grow-1 p-2"><h5 class="m-0 fs-4">Total:</h5></div>
-            <div class="p-2"><h5 class="m-0 fs-4">£ {{total}}</h5></div>
+          <div class="tfoot d-flex bg-primary text-white align-items-center px-2 pe-5">
+            <div class="flex-grow-1 fs-4">Total</div>
+            <div class="fs-4">£ {{total}}</div>
           </div>
         </div>
-        <div class="checkout-buttons">
-          <button class="btn btn-info">EDIT</button>
-          <button class="btn btn-warning">RECEIPT</button>
-          <button class="btn btn-secondary">ENTER</button>
-          <button class="btn btn-primary">SUB-TOTAL</button>
+        <div class="cart-buttons">
+          <div class="d-flex h-100">
+            <div class="w-50">
+              <button [disabled]="is_edit.state || cartList.length===0" class="btn btn-warning"><i class="fas fa-receipt"></i> RECEIPT</button>
+              <button (click)="editCartItemAction('save')" [disabled]="!is_edit.state" class="btn btn-success"><i class="far fa-save"></i> ENTER</button>
+              <button (click)="editCartItemAction('cancel')" [disabled]="!is_edit.state" class="btn btn-danger"><i class="far fa-times-circle"></i> CANCEL</button>
+            </div>
+            <div class="w-50">
+              <button [disabled]="is_edit.state || cartList.length===0" (click)="checkout()" class="btn btn-primary"><i class="fas fa-shopping-cart"></i> SUB-TOTAL</button>
+              <button [disabled]="is_edit.state || cartList.length===0" (click)="cartList=[]" class="btn btn-danger">Clear Cart</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -49,7 +67,7 @@
 </div>
 
 <!--Footer-->
-<div class="footer bg-dark h-100 text-white p-1">
+<div class="pos-footer bg-dark h-100 text-white p-1">
   <div class="container-fluid">
     <p class="m-0 fs-5">Footer Text</p>
   </div>

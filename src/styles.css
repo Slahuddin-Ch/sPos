@@ -1,13 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
 :root{
     --primary : #3f51b5;
+    --primary-rgba-10 : rgba(63, 81, 181, 0.1);
     --primary-rgba-30 : rgba(63, 81, 181, 0.3);
     --primary-hover : #3545a0;
     --screen-height : 96vh;
-    --screen-padding: 15px;
-    --main-screen   : calc(var(--screen-height) - var(--screen-padding));
+    --screen-padding: var(--bs-gutter-x,.75rem);
+    --main-screen   : calc(var(--screen-height) - (var(--screen-padding)*2));
 }
-body{margin: 0px;height: 100vh;width: 100vw;}
+body{margin: 0px;height: 100vh;width: 100vw; background-color: #f3f3f3;}
+.pos-screen{
+  max-height: var(--screen-height);
+  height: 100%;
+  background-color: #f3f3f3;
+}
+.pos-screen .container-fluid{padding: var(--screen-padding);}
+.pos-screen .screen-col{height: var(--main-screen);}
+.pos-footer{
+  max-height: calc(100vh - var(--screen-height));
+  height: 100%;
+}
 
 .bg-primary{background-color: var(--primary) !important;}
 .text-primary{color: var(--primary) !important;}
@@ -31,9 +43,21 @@ select:focus{
     border-color: var(--primary) !important;
 }
 
-.w-40{width: 40%;}
-.w-20{width: 20%;}
+button.disabled, button:disabled,
+.btn.disabled, .btn:disabled, fieldset:disabled .btn {
+  pointer-events: none;
+  opacity: .65;
+  background: #d1d1d1 !important;
+  color: black !important;
+  border-color: #d1d1d1 !important;
+}
+
 .w-10{width: 10%;}
+.w-15{width: 15%;}
+.w-20{width: 20%;}
+.w-30{width: 30%;}
+.w-35{width: 30%;}
+.w-40{width: 40%;}
 
 *{
   -webkit-touch-callout: none; /* iOS Safari */
@@ -44,3 +68,14 @@ select:focus{
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Edge, Opera and Firefox */
 }
+
+
+.btn-delete,
+.btn-edit{
+    background-color: rgba(214, 79, 79, 0.1) !important;
+    border: none;
+    width: auto;
+    height: 35px;
+    text-align: center;
+}
+.btn-edit{background-color: var(--primary-rgba-10) !important;}
