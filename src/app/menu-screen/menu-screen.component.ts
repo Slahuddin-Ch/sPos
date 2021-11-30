@@ -9,7 +9,7 @@ import { HttpService, AlertService } from '../_services';
 })
 export class MenuScreenComponent implements OnInit, AfterViewInit {
   @ViewChildren('sidebarLink') links? : QueryList<ElementRef>;
-  public currentTab : any = 'categories';
+  public currentTab : any = 'products';
   public output : any = {data : '', mode: ''};
   public selected_cat : any = '';
   public catForm : FormGroup;
@@ -24,9 +24,10 @@ export class MenuScreenComponent implements OnInit, AfterViewInit {
   
   catFormGroup(cat : any = null){
     this.catForm =  this.fb.group({
-      name  : ['', [Validators.required]],
-      price : [0, [Validators.min(0)]],
-      tax   : [0, [Validators.min(0)]],
+      id    : [cat?._id   || ''],
+      name  : [cat?.name  || '', [Validators.required]],
+      price : [cat?.price || 0, [Validators.min(0)]],
+      tax   : [cat?.tax   || 0, [Validators.min(0)]],
     });
   }
 
@@ -49,7 +50,7 @@ export class MenuScreenComponent implements OnInit, AfterViewInit {
     this.currentTab = tab;
   }
 
-  action(mode : any){
+  action(mode : any, param : any = {}){
     switch (mode) {
       case 'save':
         this.alert.spinner();
@@ -58,11 +59,44 @@ export class MenuScreenComponent implements OnInit, AfterViewInit {
           (err : any) => {this.alert.error(err);}
         );
         break;
+
+      case 'update':
+        this.alert.spinner();
+        this.http.updateCategory(this.catForm.value).subscribe(
+          (res : any) => { 
+            for (let index = 0; index < this.output.data.length; index++) {
+              if(this.output.data[index]._id===this.catForm.value.id){
+                this.output.data[index].name  = this.catForm.value.name;
+                this.output.data[index].price = this.catForm.value.price;
+                this.output.data[index].tax   = this.catForm.value.tax;
+              }
+            }
+            this.output.mode = 'view';
+            this.alert.success('Updated successfully');
+          },
+          (err : any) => {this.alert.error(err);}
+        );
+        break;
     
       case 'view':
         this.alert.spinner();
         this.http.getAllCategories().subscribe(
           (res : any) => { this.output.data = res; this.output.mode = 'view'; this.alert.clear()},
+          (err : any) => { this.alert.error(err) }
+        );
+        break;
+
+      case 'delete':
+        const id = param.id;
+        this.alert.spinner();
+        this.http.deleteCategory(id).subscribe(
+          (res : any) => { 
+            for (let index = 0; index < this.output.data.length; index++) {
+              if(this.output.data[index]._id===id)
+                this.output.data.splice(index, 1);
+            }
+            this.alert.success('Deleted Successfully');
+          },
           (err : any) => { this.alert.error(err) }
         );
         break;

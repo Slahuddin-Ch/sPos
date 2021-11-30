@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterContentChecked, ViewChild, OnDestroy, ElementRef, ViewChildren, QueryList, Renderer2 } from '@angular/core';
-import { AlertService, StorageService } from '../_services';
+import { AlertService, StorageService, HttpService } from '../_services';
 import { Router } from '@angular/router';
 import BarcodeScanner from "simple-barcode-scanner";
 const scanner = BarcodeScanner();
@@ -11,17 +11,15 @@ const scanner = BarcodeScanner();
 })
 export class MainScreenComponent implements OnInit, AfterContentChecked, OnDestroy {
   @ViewChild('posCartList') private posCartList?: ElementRef;
-  @ViewChildren('cartItem') private cartItem?: QueryList<ElementRef>;
   public listeners : any = [];
   public price : any = {state : false, value: 0, mode:'new'};
   public cartList : any = [];
   public total : Number = 0;
   public is_edit : any = {state: false, index: ''};
-
   constructor(
     private alert: AlertService, 
     private storage: StorageService,
-    private rendrer : Renderer2,
+    private http : HttpService,
     private route: Router) { }
   ngOnInit() {
     let items : any = this.storage.getCartList();
@@ -30,7 +28,15 @@ export class MainScreenComponent implements OnInit, AfterContentChecked, OnDestr
     this.total    = total || 0;
     scanner.on((code, event) => {
       event.preventDefault();
-      console.log(code);
+      this.alert.spinner('Finding');
+      this.http.findOneProduct(code).subscribe(
+        (res : any) => {
+          let product = {name: res.name, price: res.price, qty: 1};
+          this.cartList.push(product);
+          this.alert.clear();
+        },
+        (err : any) => {this.alert.error(err)}
+      );
     });
   }
   ngAfterContentChecked(){
@@ -43,20 +49,20 @@ export class MainScreenComponent implements OnInit, AfterContentChecked, OnDestr
     }else{
       this.total = 0;
     }
-    this.scrollCartList();
   }
   onPriceChange(amount : any){
     this.price = {state : false, value: amount, mode: this.price.mode};
   }
   onCategoryChoose(event : any){
-    if(this.price===0){
-     // this.alert.error('Price Cannot be 0');
-     // return;
-    }
     let product : any = event;
     product.qty = 1;
-    product.price = this.toPound(this.price.value);
+    if(this.toPound(this.price.value)>0)
+      product.price = this.toPound(this.price.value);
     this.price = {state : true, value: 0, mode:'new'};
+    if([0, '0', '', null, undefined].includes(product.price)){
+      this.alert.error('Price Cannot be 0');
+      return;
+    }
     this.cartList.push(product);
     this.scrollCartList();
   }
@@ -111,8 +117,12 @@ export class MainScreenComponent implements OnInit, AfterContentChecked, OnDestr
       scrollingElement.scrollTop = scrollingElement.scrollHeight;
     }
   }
+  logout(){
+    this.storage.logout();
+  }
   ngOnDestroy(){
     // Remove Bar Code listener
     scanner.off();
   }
+  
 }

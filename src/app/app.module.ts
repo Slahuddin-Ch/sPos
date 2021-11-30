@@ -9,21 +9,25 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { MainScreenComponent, PriceComponent, CategoryListComponent, CartComponent } from './main-screen';
 import { AlertComponent } from './_shared/alert/alert.component';
 import { CheckoutScreenComponent } from './checkout-screen/checkout-screen.component';
-import { MenuScreenComponent } from './menu-screen/menu-screen.component';
+import { MenuScreenComponent, ProductsComponent, SalesComponent } from './menu-screen';
 import { ErrorInterceptor } from './_helpers/error.interceptor';
 import { RequestInterceptor } from './_helpers/request.interceptor';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
-  declarations: [					
+  declarations: [						
     AppComponent,
+    AlertComponent,
       DashboardComponent,
       MainScreenComponent,
         CategoryListComponent,
         PriceComponent,
         CartComponent,
-    AlertComponent,
       CheckoutScreenComponent,
-      MenuScreenComponent
+      MenuScreenComponent,
+        ProductsComponent,
+        SalesComponent,
+      LoginComponent
    ],
   imports: [
     BrowserModule,

@@ -4,7 +4,8 @@
       <div class="screen-col col-3">
         <app-price (onPriceChange)="onPriceChange($event)" [state]=price></app-price>
         <div class="button-container py-3">
-          <button routerLink="menu" class="btn btn-lg w-100 fs-2 btn-primary"><i class="fas fa-bars"></i> Menu</button>
+          <button routerLink="menu" class="btn btn-lg w-100 fs-1 btn-primary"><i class="fas fa-bars"></i> Menu</button>
+          <button (click)="logout()" class="btn btn-lg w-100 fs-1 mt-2 btn-danger"><i class="fas fa-sign-out-alt"></i> Logout</button>
         </div>
       </div>
       <div class="screen-col col-3">
@@ -18,10 +19,10 @@
             <div class="w-20 text-center">Price</div>
             <div class="w-30">Total</div>
           </div>
-          <div class="tbody">
+          <div class="tbody" #posCartList>
             <ng-container *ngIf="cartList.length>0">
               <div class="tr border-bottom d-flex py-2 align-items-center cart-item" *ngFor="let item of cartList; let i=index">
-                <div #cartItem class="w-30 ps-1">{{item.name}}</div>
+                <div class="w-30 ps-1">{{item.name}}</div>
                 <div class="w-15 ps-1">
                   <div class="input-group input-group-sm quantity-counter" style="width: 100% !important;">
                     <button [disabled]="item.qty===1 || is_edit.state" (click)="changeQuantity(i, 'minus')" class="btn btn-light" type="button"><i class="fas fa-minus"></i></button>

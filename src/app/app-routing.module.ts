@@ -4,9 +4,11 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { MainScreenComponent } from './main-screen/main-screen.component';
 import { CheckoutScreenComponent } from './checkout-screen/checkout-screen.component';
 import { MenuScreenComponent } from './menu-screen/menu-screen.component';
+import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
   {path : '',          component:MainScreenComponent},
+  {path : 'login',     component: LoginComponent},
   {path : 'dashboard', component:DashboardComponent},
   {path : 'main',      component:MainScreenComponent},
   {path : 'checkout',  component:CheckoutScreenComponent},

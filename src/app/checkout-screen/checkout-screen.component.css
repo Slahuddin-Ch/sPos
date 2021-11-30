@@ -3,7 +3,24 @@
 .button-container button:nth-child(1){margin-top: 2%;}
 .button-container button:nth-child(2){margin: 2% 0px;}
 
-.total-container{max-height: calc((var(--main-screen) - 20%));border-radius: 10px;}
+.total-container{
+    max-height: calc((var(--main-screen) - 20%));
+    border-radius: 10px;
+    overflow: hidden;
+}
+.total-container .total-details{
+    height: 60%;
+}
+.total-container .total-paid-quick{
+    height: 40%;
+}
+
+.total-container .total-paid-quick button{
+    width: calc(92%/4);
+    height: calc(90%/2);
+    margin: 1%;
+}
+
 .total-button-container{
     max-height: calc(((var(--main-screen) - 80%) - 10px));
     margin-top: 10px;

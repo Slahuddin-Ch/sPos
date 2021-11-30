@@ -1,7 +1,8 @@
 <div class="category-container border">
-  <div class="category-list align-items-center">
-    <div *ngFor="let number of [0,1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4,0,1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4,0,1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4, 1, 2]; let i=index">
-      <button [disabled]="mode==='edit'" #category attr.data-name="C-{{i+1}}" attr.data-price="{{0.5*(i+1)}}"  attr.data-index="{{i+1}}" class="category bg-primary text-white py-4 text-center">C-{{i+1}}</button>
+  <div class="category-list align-items-center" *ngIf="CATEGORIES.length>0">
+    <div *ngFor="let cat of CATEGORIES; let i=index">
+      <button [disabled]="mode==='edit'" #category attr.data-name="{{cat.name}}" attr.data-price="{{cat.price}}"  attr.data-index="{{i+1}}" class="category bg-primary text-white py-4 text-center">{{cat.name}}</button>
     </div>
   </div> 
+  <h4 *ngIf="CATEGORIES.length===0" class="text-muted text-center mt-3">No Category Found</h4>
 </div>

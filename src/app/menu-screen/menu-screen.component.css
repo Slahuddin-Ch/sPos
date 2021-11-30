@@ -34,6 +34,12 @@
     height: 83%; 
     overflow: hidden;
 }
+.tab .tab-body .cat-table-heading{height: 40px;}
+.tab .tab-body .cat-table-body{
+    height: calc((var(--main-screen) - 17%) - 100px) !important;
+    overflow-y: auto;
+    background-color: white;
+}
 .tab .tab-footer{
     max-height: 10%; 
     height: 10%; 
@@ -41,5 +47,5 @@
 }
 .tab .tab-footer button{
     height: 100%;
-    width: calc(100%/4);
+    width: calc(100%/2);
 }

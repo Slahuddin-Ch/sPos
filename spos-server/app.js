@@ -1,10 +1,10 @@
 const express = require("express");
-const bcrypt  = require("bcryptjs");
-const jwt     = require("jsonwebtoken");
 var cors      = require('cors');
 const db      = require('./config/database');
 var ObjectId  = require('mongodb').ObjectID;
 const category = require('./routes/categories.router');
+const products = require('./routes/products.router');
+const user     = require('./routes/user.router');
 
 const app = express();
 // Connect Database
@@ -17,7 +17,9 @@ app.use(express.urlencoded({
   extended: true
 }));
 // Define Routes
+app.use('/user',     user);
 app.use('/category', category);
+app.use('/products', products);
 
 // This should be the last route else any after it won't work
 app.use("*", (req, res) => {
