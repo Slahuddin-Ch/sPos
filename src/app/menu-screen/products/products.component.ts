@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChildren, AfterViewInit, QueryList, Renderer2 } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpService, AlertService } from '../../_services';
 
@@ -14,8 +14,7 @@ export class ProductsComponent implements OnInit {
   constructor(
     private fb  : FormBuilder,
     private alert: AlertService,
-    private http : HttpService,
-    private rendrer: Renderer2) { 
+    private http : HttpService) { 
       this.productForm = this.fb.group({});
   }
 

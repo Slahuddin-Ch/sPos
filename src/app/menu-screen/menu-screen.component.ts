@@ -9,7 +9,7 @@ import { HttpService, AlertService } from '../_services';
 })
 export class MenuScreenComponent implements OnInit, AfterViewInit {
   @ViewChildren('sidebarLink') links? : QueryList<ElementRef>;
-  public currentTab : any = 'products';
+  public currentTab : any = 'sales';
   public output : any = {data : '', mode: ''};
   public selected_cat : any = '';
   public catForm : FormGroup;

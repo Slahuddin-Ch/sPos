@@ -13,6 +13,7 @@ import { MenuScreenComponent, ProductsComponent, SalesComponent } from './menu-s
 import { ErrorInterceptor } from './_helpers/error.interceptor';
 import { RequestInterceptor } from './_helpers/request.interceptor';
 import { LoginComponent } from './login/login.component';
+import { SaleReceiptComponent } from './_modals/sale-receipt/sale-receipt.component';
 
 @NgModule({
   declarations: [						
@@ -27,7 +28,8 @@ import { LoginComponent } from './login/login.component';
       MenuScreenComponent,
         ProductsComponent,
         SalesComponent,
-      LoginComponent
+      LoginComponent,
+      SaleReceiptComponent
    ],
   imports: [
     BrowserModule,

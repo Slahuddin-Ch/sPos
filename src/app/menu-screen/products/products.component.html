@@ -32,30 +32,48 @@
       <div class="row">
         <div class="col-12">
           <div class="form-group mb-3">
-            <label for="name" class="form-label">Product Name<sup class="text-danger">*</sup></label>
-            <input type="text" class="form-control fs-2" formControlName="name" placeholder="Enter Product Name">
-            <span *ngIf="productForm.get('name')?.hasError('required')" class="text-danger">This field is requried.</span>
+            <div class="form-floating">
+              <input type="text" formControlName="name" class="form-control" id="name" placeholder="Enter Product Name">
+              <label for="name">Product Name<sup class="text-danger">*</sup></label>
+            </div>
+            <div *ngIf="(productForm.get('name')?.dirty || productForm.get('name')?.touched) && productForm.get('name')?.invalid">
+              <span *ngIf="productForm.get('name')?.hasError('required')" class="text-danger">This field is requried.</span>
+            </div>
           </div>
         </div>
         <div class="col-12">
           <div class="form-group mb-3">
-            <label for="name" class="form-label">Product Bar Code<sup class="text-danger">*</sup></label>
-            <input type="text" class="form-control fs-2" formControlName="code" placeholder="Enter Product Bar Code">
-            <span *ngIf="productForm.get('code')?.hasError('required')" class="text-danger">This field is requried</span>
+            <div class="form-floating">
+              <input type="text" formControlName="code" class="form-control" id="code" placeholder="Scan Product Barcode">
+              <label for="code">Product Barcode<sup class="text-danger">*</sup></label>
+            </div>
+            <div *ngIf="(productForm.get('code')?.dirty || productForm.get('code')?.touched) && productForm.get('code')?.invalid">
+              <span *ngIf="productForm.get('code')?.hasError('required')" class="text-danger">This field is requried</span>
+            </div>
           </div>
         </div>
         <div class="col-6">
           <div class="form-group mb-3">
-            <label for="name" class="form-label">Price (Default: 0)</label>
-            <input type="number" class="form-control fs-2" formControlName="price" placeholder="Enter Price">
-            <span *ngIf="productForm.get('price')?.hasError('min')" class="text-danger">Min 0 value is allowed</span>
+            <div class="form-floating">
+              <input type="number" formControlName="price" class="form-control" id="price" placeholder="Enter Price">
+              <label for="price">Price</label>
+            </div>
+            <small class="text-muted">Default: 0</small>
+            <div *ngIf="(productForm.get('price')?.dirty || productForm.get('price')?.touched) && productForm.get('price')?.invalid">
+              <span *ngIf="productForm.get('price')?.hasError('min')" class="text-danger">Min 0 value is allowed</span>
+            </div>
           </div>
         </div>
         <div class="col-6">
           <div class="form-group mb-3">
-            <label for="name" class="form-label">Tax (Default: 0)</label>
-            <input type="number" class="form-control fs-2" formControlName="tax" placeholder="Enter Tax">
-            <span *ngIf="productForm.get('tax')?.hasError('min')" class="text-danger">Min 0 value is allowed</span>
+            <div class="form-floating">
+              <input type="number" formControlName="tax" class="form-control" id="tax" placeholder="Enter Tax">
+              <label for="tax">Tax</label>
+            </div>
+            <small class="text-muted">Default: 0</small>
+            <div *ngIf="(productForm.get('tax')?.dirty || productForm.get('tax')?.touched) && productForm.get('tax')?.invalid">
+              <span *ngIf="productForm.get('tax')?.hasError('min')" class="text-danger">Min 0 value is allowed</span>
+            </div>
           </div>
         </div>
       </div>

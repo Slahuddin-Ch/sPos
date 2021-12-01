@@ -11,7 +11,9 @@ const OPTIONS = {
 })
 export class HttpService {
   constructor(private http: HttpClient) { }
-  
+  /********************************************************************************
+   * User Functions
+  *********************************************************************************/
   login(data : any){
     return this.http.post(SERVER_URL + '/user/login', data, OPTIONS);
   }
@@ -53,5 +55,14 @@ export class HttpService {
     let params = new HttpParams();
     params = params.append('id', id);
     return this.http.delete(SERVER_URL+'/products/remove', {params : params, headers : OPTIONS.headers});
+  }
+  /********************************************************************************
+   * Sales Functions
+  *********************************************************************************/
+  getSales(filter : any = {}){
+    return this.http.post(SERVER_URL+'/sales/all', filter, OPTIONS);
+  }
+  newSale(sale : any){
+    return this.http.post(SERVER_URL+'/sales/add', sale, OPTIONS);
   }
 }

@@ -94,6 +94,11 @@ export class MainScreenComponent implements OnInit, AfterContentChecked, OnDestr
     this.storage.saveTotal(this.total);
     this.route.navigate(['checkout']);
   }
+  clearCart(){
+    this.storage.clearCart();
+    this.cartList = [];
+    this.price = {state : true, value: 0, mode: 'new'};
+  }
   /*********************************************************************
    * Quantity Counter
    * @param index Index/Id of item

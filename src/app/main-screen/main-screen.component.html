@@ -4,8 +4,8 @@
       <div class="screen-col col-3">
         <app-price (onPriceChange)="onPriceChange($event)" [state]=price></app-price>
         <div class="button-container py-3">
-          <button routerLink="menu" class="btn btn-lg w-100 fs-1 btn-primary"><i class="fas fa-bars"></i> Menu</button>
-          <button (click)="logout()" class="btn btn-lg w-100 fs-1 mt-2 btn-danger"><i class="fas fa-sign-out-alt"></i> Logout</button>
+          <button [disabled]="is_edit.state" routerLink="menu" class="btn btn-lg w-100 fs-1 btn-primary"><i class="fas fa-bars"></i> Menu</button>
+          <button [disabled]="is_edit.state" (click)="logout()" class="btn btn-lg w-100 fs-1 mt-2 btn-danger"><i class="fas fa-sign-out-alt"></i> Logout</button>
         </div>
       </div>
       <div class="screen-col col-3">
@@ -14,15 +14,15 @@
       <div class="screen-col col-6">
         <div class="pos-cart-table border rounded">
           <div class="thead d-flex bg-primary text-white p-2 px-2">
-            <div class="w-25">Product</div>
-            <div class="w-25 text-center">Quantity</div>
-            <div class="w-20 text-center">Price</div>
-            <div class="w-30">Total</div>
+            <div class="w-30">Product</div>
+            <div class="w-15 text-center">Quantity</div>
+            <div class="w-15 text-center">Price</div>
+            <div class="w-40">Total</div>
           </div>
           <div class="tbody" #posCartList>
             <ng-container *ngIf="cartList.length>0">
               <div class="tr border-bottom d-flex py-2 align-items-center cart-item" *ngFor="let item of cartList; let i=index">
-                <div class="w-30 ps-1">{{item.name}}</div>
+                <div class="w-30 ps-1 text-capitalize">{{item.name}}</div>
                 <div class="w-15 ps-1">
                   <div class="input-group input-group-sm quantity-counter" style="width: 100% !important;">
                     <button [disabled]="item.qty===1 || is_edit.state" (click)="changeQuantity(i, 'minus')" class="btn btn-light" type="button"><i class="fas fa-minus"></i></button>
@@ -58,7 +58,7 @@
             </div>
             <div class="w-50">
               <button [disabled]="is_edit.state || cartList.length===0" (click)="checkout()" class="btn btn-primary"><i class="fas fa-shopping-cart"></i> SUB-TOTAL</button>
-              <button [disabled]="is_edit.state || cartList.length===0" (click)="cartList=[]" class="btn btn-danger">Clear Cart</button>
+              <button [disabled]="is_edit.state || cartList.length===0" (click)="clearCart()" class="btn btn-danger">Clear Cart</button>
             </div>
           </div>
         </div>

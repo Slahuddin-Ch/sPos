@@ -18,13 +18,16 @@ router.post("/new", auth, async (req, res) => {
     const {name, price, tax} = req.body;
     const uid   = req?.user.uid || '';
     try {
-        const category = await Category.create({uid, name, price, tax});
-        return res.status(res.statusCode).json(category)
+        const findQuery= {$and: [{uid: uid}, {name:name}]}
+        const is_exist = await Category.findOne(findQuery);
+        if(is_exist===null){
+            const category = await Category.create({uid, name, price, tax});
+            return res.status(200).json(category)
+        }else{
+            return res.status(401).json({message : 'Category "'+is_exist.name+'" already exist.'});
+        }
     } catch (error) {
-        if(error.code===11000)
-            return res.status(401).json({message : 'Category "'+name+'" already exist.'});
-        else
-            return res.status(401).json({message : error.message});
+        return res.status(401).json({message : error.message});
     }
 });
 

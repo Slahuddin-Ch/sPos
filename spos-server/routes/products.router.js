@@ -35,13 +35,17 @@ router.post("/new", auth, async (req, res) => {
     const {name, code, price, tax} = req.body;
     const uid   = req?.user.uid || '';
     try {
-        const product = await Products.create({uid, name, code, price, tax});
-        return res.status(res.statusCode).json(product)
+        const findQuery = {$and: [{uid: uid}, {code:code}]};
+        const is_exist = await Products.findOne(findQuery);
+        console.log(is_exist);
+        if(is_exist===null){
+            const product = await Products.create({uid, name, code, price, tax});
+            return res.status(200).json(product)
+        }else{
+            return res.status(401).json({message : 'Product "'+is_exist.name+'" with barcode "'+is_exist.code+'" already exist.'});
+        }
     } catch (error) {
-        if(error.code===11000)
-            return res.status(401).json({message : 'Product "'+name+'" already exist.'});
-        else
-            return res.status(401).json({message : error.message});
+        return res.status(401).json({message : error.message});
     }
 });
 

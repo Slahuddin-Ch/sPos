@@ -3,7 +3,7 @@
     <div class="row">
       <div class="screen-col col-3">
         <div class="sidebar bg-white rounded border p-3">
-          <ul class="list-unstyled">
+          <ul class="list-unstyled m-0 h-100">
             <li><button #sidebarLink data-tab="categories">Categories</button></li>
             <li><button #sidebarLink data-tab="products">Products</button></li>
             <li><button #sidebarLink data-tab="sales">Sales</button></li>
@@ -23,23 +23,37 @@
                   <div class="row">
                     <div class="col-12">
                       <div class="form-group mb-3">
-                        <label for="name" class="form-label">Category Name<sup class="text-danger">*</sup></label>
-                        <input type="text" class="form-control fs-2" formControlName="name" placeholder="Enter Cat Name">
-                        <span *ngIf="catForm.get('name')?.hasError('required')" class="text-danger">This field is requried.</span>
+                        <div class="form-floating">
+                          <input type="text" formControlName="name" class="form-control" id="cat-name" placeholder="Enter Category Name">
+                          <label for="cat-name">Category Name</label>
+                        </div>
+                        <div *ngIf="(catForm.get('name')?.dirty || catForm.get('name')?.touched) && catForm.get('name')?.invalid">
+                          <span *ngIf="catForm.get('name')?.hasError('required')" class="text-danger">This field is required</span>
+                        </div>
                       </div>
                     </div>
                     <div class="col-6">
                       <div class="form-group mb-3">
-                        <label for="name" class="form-label">Price (Default: 0)</label>
-                        <input type="number" class="form-control fs-2" formControlName="price" placeholder="Enter Price">
-                        <span *ngIf="catForm.get('price')?.hasError('min')" class="text-danger">Min 0 value is allowed.</span>
+                        <div class="form-floating">
+                          <input type="number" formControlName="price" class="form-control" id="cat-name" placeholder="Enter Price">
+                          <label for="cat-name">Price</label>
+                        </div>
+                        <small class="text-muted">Default: 0</small>
+                        <div *ngIf="(catForm.get('price')?.dirty || catForm.get('price')?.touched) && catForm.get('price')?.invalid">
+                          <span *ngIf="catForm.get('price')?.hasError('min')" class="text-danger">Min 0 value is allowed.</span>
+                        </div>
                       </div>
                     </div>
                     <div class="col-6">
                       <div class="form-group mb-3">
-                        <label for="name" class="form-label">Tax (Default: 0)</label>
-                        <input type="number" class="form-control fs-2" formControlName="tax" placeholder="Enter Tax">
-                        <span *ngIf="catForm.get('tax')?.hasError('min')" class="text-danger">Min 0 value is allowed.</span>
+                        <div class="form-floating">
+                          <input type="number" formControlName="tax" class="form-control" id="cat-tax" placeholder="Enter Tax">
+                          <label for="cat-tax">Tax</label>
+                        </div>
+                        <small class="text-muted">Default: 0</small>
+                        <div *ngIf="(catForm.get('tax')?.dirty || catForm.get('tax')?.touched) && catForm.get('tax')?.invalid">
+                          <span *ngIf="catForm.get('tax')?.hasError('min')" class="text-danger">Min 0 value is allowed.</span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -56,7 +70,7 @@
                 <div class="cat-table-body w-100">
                   <ng-container *ngIf="output.data!=='' && output.data?.length>0">
                     <div class="d-flex text-dark p-2 align-items-center border-bottom" *ngFor="let cat of output.data">
-                      <div class="w-40">{{cat.name}}</div>
+                      <div class="w-40 text-capitalize">{{cat.name}}</div>
                       <div class="w-20">{{cat.price}}</div>
                       <div class="w-20">{{cat.tax}}</div>
                       <div class="w-20">
