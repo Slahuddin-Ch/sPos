@@ -49,3 +49,25 @@
     height: 100%;
     width: calc(100%/2);
 }
+
+
+.tax-radio{
+    padding: 0px !important;
+    margin: 0px !important;
+    width: calc(96%/3);
+    text-align: center;
+}
+.tax-radio:nth-child(3){margin: 0px 2% !important;}
+.tax-radio .form-check-input{display: none;}
+.tax-radio .form-check-input+.form-check-label{
+    width: 100%;
+    padding: 10%;
+    background-color: var(--primary-rgba-30);
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.tax-radio .form-check-input:checked+.form-check-label{
+    background-color: var(--primary);
+}

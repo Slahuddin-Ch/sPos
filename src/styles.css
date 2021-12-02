@@ -101,3 +101,15 @@ button.disabled, button:disabled,
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+
+
+
+
+.print-table {display: none;}
+@media print {
+  app-root > * { display: none; }
+  app-root app-sale-receipt { display: block; }
+  .modal{display: none !important;}
+  .print-table {display: block;width: 100%;}
+}

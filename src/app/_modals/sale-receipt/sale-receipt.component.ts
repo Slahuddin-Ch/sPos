@@ -18,8 +18,12 @@ export class SaleReceiptComponent implements AfterViewInit {
     this.subscription = this.receipt.getReceipt().subscribe(
       (res : any) => {
         this.output = res;
-        console.log(res);
-        this.items = JSON.parse(this.output.data.items) || [];
+        console.log(typeof this.output.data.items);
+        if(typeof this.output.data.items==='string'){
+          this.items = JSON.parse(this.output.data.items) || [];
+        }else{
+          this.items = this.output.data.items;
+        }
         if(this.output.type==='show'){
           this.showModal();
         }else{
@@ -40,6 +44,19 @@ export class SaleReceiptComponent implements AfterViewInit {
     this.rendrer.setStyle(this.modal?.nativeElement, 'display', 'none');
     this.output = {type: '', data: null};
     this.items = [];
+  }
+
+  printReceipt(){
+    window.print();
+    return;
+    var prtContent : any = document.getElementById("print_receipt");
+    console.log(prtContent.children);
+    /*var WinPrint : any = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+    WinPrint.document.write(prtContent.innerHTML);
+    WinPrint.document.close();
+    WinPrint.focus();
+    WinPrint.print();
+    WinPrint.close();*/
   }
 
   ngOnDestroy() {

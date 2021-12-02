@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { AlertService, StorageService, HttpService } from '../_services';
+import { AlertService, StorageService, HttpService, ReceiptService } from '../_services';
 
 @Component({
   selector: 'app-checkout-screen',
@@ -18,6 +18,7 @@ export class CheckoutScreenComponent implements OnInit {
   constructor(
     private alert : AlertService,
     private storage: StorageService,
+    private receipt : ReceiptService,
     private http: HttpService,
     private cdr: ChangeDetectorRef) { }
 
@@ -67,14 +68,20 @@ export class CheckoutScreenComponent implements OnInit {
         this.checkout.method = mode;
         this.checkout.items  = JSON.stringify(this.checkout.items);
         this.http.newSale(this.checkout).subscribe(
-          (res : any) => {console.log(res)},
+          (res : any) => {
+            this.receipt.show(this.checkout);
+            this.alert.success('Processed Successfully in card');
+            this.resetAll();
+          },
           (err : any) => {this.alert.error(err)}
         );
-        this.alert.success('Processed Successfully in card');
         break;
       default:
         break;
     }
+    
+  }
+  resetAll(){
     this.checkout = {subtotal:0, total: 0, discount: 0, paid: 0, items: []};
     this.price = {state : true, value: 0};
     this.storage.clearCart();

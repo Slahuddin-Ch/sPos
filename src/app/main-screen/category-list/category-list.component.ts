@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter,OnChanges, ViewChildren, Renderer2, QueryList, ElementRef, SimpleChanges } from '@angular/core';
-import { HttpService, AlertService } from 'src/app/_services';
+import { HttpService, AlertService, StorageService } from 'src/app/_services';
 
 @Component({
   selector: 'app-category-list',
@@ -15,19 +15,26 @@ export class CategoryListComponent implements OnChanges {
   constructor(
     private rendrer : Renderer2,
     private alert : AlertService,
-    private http: HttpService) { }
+    private http: HttpService,
+    private storage: StorageService) { }
 
   ngOnInit() {
-    // Get categories
-    this.http.getAllCategories().subscribe(
-      (res : any) => {
-        this.CATEGORIES = res;
-        setTimeout(() => {
-          this.initEventListner();
-        }, 100);
-      },
-      (err : any) => {this.alert.error(err)}
-    );
+    this.CATEGORIES = this.storage.getLocalCategories();
+    if(typeof this.CATEGORIES==='string')
+      this.CATEGORIES = JSON.parse(this.CATEGORIES);
+    if(typeof this.CATEGORIES!=='object' || this.CATEGORIES?.length===0){
+      // Get categories
+      this.http.getAllCategories().subscribe(
+        (res : any) => {
+          this.storage.saveLocalCategories(JSON.stringify(res));
+          this.CATEGORIES = res;
+          setTimeout(() => {
+            this.initEventListner();
+          }, 100);
+        },
+        (err : any) => {this.alert.error(err)}
+      );
+    }
   }
   ngOnChanges(changes : SimpleChanges){
     this.mode = changes.mode.currentValue;
@@ -41,9 +48,9 @@ export class CategoryListComponent implements OnChanges {
     const cat    = event.target;
     const data   = cat?.dataset;
     const detail = {
-      id : data.index,
+      id  : data.index,
       name: data.name,
-      price: data.price
+      tax : data.tax
     }
     this.onCategoryChoose.emit(detail);
   }

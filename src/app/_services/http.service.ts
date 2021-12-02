@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
-const SERVER_URL = 'http://localhost:3003';
+const SERVER_URL = environment.SERVER_URL;
 const OPTIONS = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };

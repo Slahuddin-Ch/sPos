@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChildren, AfterViewInit, QueryList, Renderer2 } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { HttpService, AlertService } from '../_services';
+import { HttpService, AlertService, StorageService } from '../_services';
 
 @Component({
   selector: 'app-menu-screen',
@@ -9,7 +9,7 @@ import { HttpService, AlertService } from '../_services';
 })
 export class MenuScreenComponent implements OnInit, AfterViewInit {
   @ViewChildren('sidebarLink') links? : QueryList<ElementRef>;
-  public currentTab : any = 'sales';
+  public currentTab : any = 'categories';
   public output : any = {data : '', mode: ''};
   public selected_cat : any = '';
   public catForm : FormGroup;
@@ -18,7 +18,8 @@ export class MenuScreenComponent implements OnInit, AfterViewInit {
     private fb  : FormBuilder,
     private alert: AlertService,
     private http : HttpService,
-    private rendrer: Renderer2) { 
+    private rendrer: Renderer2,
+    private storage : StorageService) { 
       this.catForm = this.fb.group({});
     }
   
@@ -26,8 +27,7 @@ export class MenuScreenComponent implements OnInit, AfterViewInit {
     this.catForm =  this.fb.group({
       id    : [cat?._id   || ''],
       name  : [cat?.name  || '', [Validators.required]],
-      price : [cat?.price || 0, [Validators.min(0)]],
-      tax   : [cat?.tax   || 0, [Validators.min(0)]],
+      tax   : [cat?.tax   || '0' , [Validators.required]],
     });
   }
 
@@ -55,7 +55,12 @@ export class MenuScreenComponent implements OnInit, AfterViewInit {
       case 'save':
         this.alert.spinner();
         this.http.newCategory(this.catForm.value).subscribe(
-          (res : any) => { this.output.mode = 'view'; this.output.data.push(res); this.alert.success('Category created successfully');},
+          (res : any) => { 
+            this.output.mode = 'view'; 
+            this.output.data.push(res); 
+            this.storage.saveLocalCategories(JSON.stringify(this.output.data));
+            this.alert.success('Category created successfully');
+          },
           (err : any) => {this.alert.error(err);}
         );
         break;
@@ -67,10 +72,10 @@ export class MenuScreenComponent implements OnInit, AfterViewInit {
             for (let index = 0; index < this.output.data.length; index++) {
               if(this.output.data[index]._id===this.catForm.value.id){
                 this.output.data[index].name  = this.catForm.value.name;
-                this.output.data[index].price = this.catForm.value.price;
                 this.output.data[index].tax   = this.catForm.value.tax;
               }
             }
+            this.storage.saveLocalCategories(JSON.stringify(this.output.data));
             this.output.mode = 'view';
             this.alert.success('Updated successfully');
           },
@@ -95,6 +100,7 @@ export class MenuScreenComponent implements OnInit, AfterViewInit {
               if(this.output.data[index]._id===id)
                 this.output.data.splice(index, 1);
             }
+            this.storage.saveLocalCategories(JSON.stringify(this.output.data));
             this.alert.success('Deleted Successfully');
           },
           (err : any) => { this.alert.error(err) }

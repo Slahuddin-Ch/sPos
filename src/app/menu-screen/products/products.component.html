@@ -5,7 +5,7 @@
       <div class="w-30">Name</div>
       <div class="w-20">Bar Code</div>
       <div class="w-15">Price</div>
-      <div class="w-15">Tax</div>
+      <div class="w-15">Category (Tax)</div>
       <div class="w-20">Action</div>
     </div>
     <div class="product-table-body w-100">
@@ -14,7 +14,7 @@
           <div class="w-30">{{product.name}}</div>
           <div class="w-20">{{product.code}}</div>
           <div class="w-15">{{product.price}}</div>
-          <div class="w-15">{{product.tax}}</div>
+          <div class="w-15">{{product.cat_detail[0]?.name}} ({{product.cat_detail[0]?.tax}}%)</div>
           <div class="w-20">
             <button (click)="productFormGroup(product);output.mode='edit'" class="btn btn-edit text-primary me-1"><i class="fas fa-pencil-alt"></i> Edit</button>
             <button (click)="action('remove', {id: product._id})" class="btn btn-delete text-danger"><i class="fas fa-trash"></i> Delete</button>
@@ -55,24 +55,29 @@
         <div class="col-6">
           <div class="form-group mb-3">
             <div class="form-floating">
-              <input type="number" formControlName="price" class="form-control" id="price" placeholder="Enter Price">
-              <label for="price">Price</label>
+              <select class="form-select" formControlName="cat_id" id="cat_id">
+                <option value="">Select</option>
+                <ng-container *ngIf="categories.length>0">
+                  <option *ngFor="let cat of categories" value="{{cat._id}}">{{cat.name}}</option>
+                </ng-container>
+              </select>
+              <label for="cat_id">Category<sup class="text-danger">*</sup></label>
             </div>
-            <small class="text-muted">Default: 0</small>
-            <div *ngIf="(productForm.get('price')?.dirty || productForm.get('price')?.touched) && productForm.get('price')?.invalid">
-              <span *ngIf="productForm.get('price')?.hasError('min')" class="text-danger">Min 0 value is allowed</span>
+            <div *ngIf="(productForm.get('cat_id')?.dirty || productForm.get('cat_id')?.touched) && productForm.get('cat_id')?.invalid">
+              <span *ngIf="productForm.get('cat_id')?.hasError('required')" class="text-danger">This field is required</span>
             </div>
           </div>
         </div>
         <div class="col-6">
           <div class="form-group mb-3">
             <div class="form-floating">
-              <input type="number" formControlName="tax" class="form-control" id="tax" placeholder="Enter Tax">
-              <label for="tax">Tax</label>
+              <input type="number" formControlName="price" class="form-control" id="price" placeholder="Enter price">
+              <label for="price">Price<sup class="text-danger">*</sup></label>
             </div>
-            <small class="text-muted">Default: 0</small>
-            <div *ngIf="(productForm.get('tax')?.dirty || productForm.get('tax')?.touched) && productForm.get('tax')?.invalid">
-              <span *ngIf="productForm.get('tax')?.hasError('min')" class="text-danger">Min 0 value is allowed</span>
+            <small class="text-muted">Enter price in largest currency (E.g Pounds).</small>
+            <div *ngIf="(productForm.get('price')?.dirty || productForm.get('price')?.touched) && productForm.get('price')?.invalid">
+              <span *ngIf="productForm.get('price')?.hasError('required')" class="text-danger">This field is required</span>
+              <span *ngIf="productForm.get('price')?.hasError('min')" class="text-danger">Min 0 value is allowed</span>
             </div>
           </div>
         </div>

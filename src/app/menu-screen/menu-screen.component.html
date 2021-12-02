@@ -4,7 +4,7 @@
       <div class="screen-col col-3">
         <div class="sidebar bg-white rounded border p-3">
           <ul class="list-unstyled m-0 h-100">
-            <li><button #sidebarLink data-tab="categories">Categories</button></li>
+            <li><button class="active" #sidebarLink data-tab="categories">Categories</button></li>
             <li><button #sidebarLink data-tab="products">Products</button></li>
             <li><button #sidebarLink data-tab="sales">Sales</button></li>
             <li><button routerLink="/" class="bg-danger text-white text-center">Back</button></li>
@@ -32,28 +32,19 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-6">
-                      <div class="form-group mb-3">
-                        <div class="form-floating">
-                          <input type="number" formControlName="price" class="form-control" id="cat-name" placeholder="Enter Price">
-                          <label for="cat-name">Price</label>
-                        </div>
-                        <small class="text-muted">Default: 0</small>
-                        <div *ngIf="(catForm.get('price')?.dirty || catForm.get('price')?.touched) && catForm.get('price')?.invalid">
-                          <span *ngIf="catForm.get('price')?.hasError('min')" class="text-danger">Min 0 value is allowed.</span>
-                        </div>
+                    <div class="col-12">
+                      <label class="form-label d-block">Tax Includes?</label>
+                      <div class="form-check tax-radio form-check-inline">
+                        <input class="form-check-input" type="radio" formControlName="tax" id="tax-0" value="0">
+                        <label class="form-check-label" for="tax-0">0%</label>
                       </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="form-group mb-3">
-                        <div class="form-floating">
-                          <input type="number" formControlName="tax" class="form-control" id="cat-tax" placeholder="Enter Tax">
-                          <label for="cat-tax">Tax</label>
-                        </div>
-                        <small class="text-muted">Default: 0</small>
-                        <div *ngIf="(catForm.get('tax')?.dirty || catForm.get('tax')?.touched) && catForm.get('tax')?.invalid">
-                          <span *ngIf="catForm.get('tax')?.hasError('min')" class="text-danger">Min 0 value is allowed.</span>
-                        </div>
+                      <div class="form-check tax-radio form-check-inline">
+                        <input class="form-check-input" type="radio" formControlName="tax" id="tax-5" value="5">
+                        <label class="form-check-label" for="tax-5">5%</label>
+                      </div>
+                      <div class="form-check tax-radio form-check-inline">
+                        <input class="form-check-input" type="radio" formControlName="tax" id="tax-20" value="20">
+                        <label class="form-check-label" for="tax-20">20%</label>
                       </div>
                     </div>
                   </div>
@@ -62,18 +53,16 @@
               <!-- Category View [LIST] -->
               <ng-container *ngIf="output.mode=='view'">
                 <div class="cat-table-heading d-flex bg-primary text-white p-2 fw-bold">
-                  <div class="w-40">Name</div>
-                  <div class="w-20">Price</div>
-                  <div class="w-20">Tax</div>
-                  <div class="w-20">Action</div>
+                  <div class="w-50">Name</div>
+                  <div class="w-25">Tax</div>
+                  <div class="w-25">Action</div>
                 </div>
                 <div class="cat-table-body w-100">
                   <ng-container *ngIf="output.data!=='' && output.data?.length>0">
                     <div class="d-flex text-dark p-2 align-items-center border-bottom" *ngFor="let cat of output.data">
-                      <div class="w-40 text-capitalize">{{cat.name}}</div>
-                      <div class="w-20">{{cat.price}}</div>
-                      <div class="w-20">{{cat.tax}}</div>
-                      <div class="w-20">
+                      <div class="w-50 text-capitalize">{{cat.name}}</div>
+                      <div class="w-25">{{cat.tax}}%</div>
+                      <div class="w-25">
                         <button (click)="catFormGroup(cat);output.mode='edit'" class="btn btn-edit text-primary me-1"><i class="fas fa-pencil-alt"></i> Edit</button>
                         <button (click)="action('delete', {id: cat._id})" class="btn btn-delete text-danger"><i class="fas fa-trash"></i> Delete</button>
                       </div>

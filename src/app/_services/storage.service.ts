@@ -6,6 +6,7 @@ const CART_ITEMS = 'cart-items';
 const CART_TOTAL = 'cart-total';
 const USER       = 'curr-user';
 const USER_TOKEN = 'curr-user-token';
+const CATEGORIES = 'categories';
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +33,7 @@ export class StorageService {
     sessionStorage.removeItem(USER_TOKEN);
     sessionStorage.removeItem(USER);
     this.clearCart();
+    this.clearLocalCategories();
     this.user.next(null);
     this.route.navigate(['/login']);
   }
@@ -46,4 +48,10 @@ export class StorageService {
     sessionStorage.removeItem(CART_ITEMS);
     sessionStorage.removeItem(CART_TOTAL);
   }
+  /**********************************************************************
+   * Category Functions
+  ***********************************************************************/
+  getLocalCategories(){ return sessionStorage.getItem(CATEGORIES) || [] }
+  saveLocalCategories(cats : any){ sessionStorage.setItem(CATEGORIES, cats) }
+  clearLocalCategories(){ sessionStorage.removeItem(CATEGORIES); }
 }
