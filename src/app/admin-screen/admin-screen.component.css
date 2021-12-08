@@ -1,0 +1,63 @@
+.sidebar{ height: 100%; overflow-y: auto;}
+.sidebar li{margin-bottom: 10px;height: 15%}
+.sidebar button{
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    font-size: 28px;
+    background-color: var(--primary-rgba-30);
+    color: black;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    padding: 5px 20px;
+    text-align: start;
+}
+.sidebar button i{
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    color: black;
+    text-align: center;
+    padding: 12px 0px;
+    border-radius: 100%;
+
+}
+.sidebar button:focus,
+.sidebar button:hover,
+.sidebar button.active{
+    background-color: var(--primary);
+    color: white;
+}
+
+
+.tab .tab-heading{
+    max-height: 10%; 
+    height: 10%; 
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+.tab .tab-content{
+    height: 90%; 
+    overflow-y: auto;
+    padding: 2%;
+}
+
+
+.tab .tab-body .cat-table-heading{height: 40px;}
+.tab .tab-body .cat-table-body{
+    height: calc((var(--main-screen) - 17%) - 100px) !important;
+    overflow-y: auto;
+    background-color: white;
+}
+.tab .tab-footer{
+    max-height: 10%; 
+    height: 10%; 
+    overflow: hidden;
+}
+.tab .tab-footer button{
+    height: 100%;
+    width: calc(100%/2);
+}

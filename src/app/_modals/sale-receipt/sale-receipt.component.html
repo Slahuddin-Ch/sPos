@@ -1,0 +1,100 @@
+<!-- Modal -->
+<div class="modal fade" #receiptModal id="receiptModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+    <div class="modal-content shadow-lg">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Sale Receipt</h5>
+        <button (click)="hideModal()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="print_receipt">
+        <table class="table table-borderless">
+          <thead class="bg-light">
+            <tr>
+              <td>Product</td>
+              <td>Qty</td>
+              <td>Price</td>
+              <td>Vat</td>
+            </tr>
+          </thead>
+          <tbody *ngIf="output?.data?.items">
+            <tr *ngFor="let item of items">
+              <td>{{item.name}}</td>
+              <td>{{item.qty}}</td>
+              <td>{{item.price}}</td>
+              <td>{{item.tax}}%</td>
+            </tr>
+            <tr class="border-top">
+              <td class="fw-bold" colspan="2">SubTotal</td>
+              <td>{{output.data.subtotal}}</td>
+            </tr>
+            <tr>
+              <td colspan="2">Discount</td>
+              <td>-{{output.data.discount}}%</td>
+            </tr>
+            <tr>
+              <td class="fw-bold" colspan="2">Total</td>
+              <td>{{output.data.total}}</td>
+            </tr>
+            <tr>
+              <td class="fw-bold" colspan="2">Paid</td>
+              <td>{{output.data.paid}}</td>
+            </tr>
+            <tr>
+              <td class="fw-bold" colspan="2">Change</td>
+              <td>{{(output.data.paid - output.data.total) | number}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button (click)="hideModal()" type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+        <button (click)="printReceipt()" type="button" class="btn btn-primary"><i class="fas fa-print"></i> Print</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="w-100 print-table" *ngIf="output?.data">
+  <div class="business-info">
+    <div class="business-name fs-3 text-center">Business Name</div>
+    <div class="business-address text-center">Business Address</div>
+    <div class="invoice-time">Genrated On: DATE</div>
+  </div>
+  <div class="d-flex p-1">
+    <div class="w-50 fw-bold">Product</div>
+    <div class="w-20 fw-bold">Qty</div>
+    <div class="w-20 fw-bold">Price</div>
+    <div class="w-10 fw-bold">Vat</div>
+  </div>
+  <ng-container *ngIf="output?.data?.items">
+    <div class="d-flex p-1 border-bottom" *ngFor="let item of items">
+      <div class="w-50">{{item.name}}</div>
+      <div class="w-20">{{item.qty}}</div>
+      <div class="w-20">{{item.price}}</div>
+      <div class="w-10">{{item.tax}}%</div>
+    </div>
+  </ng-container>
+  <div class="d-flex p-1">
+    <div class="w-75">SubTotal</div>
+    <div class="w-25">{{output.data.subtotal}}</div>
+  </div>
+  <div class="d-flex p-1">
+    <div class="w-75">Discount</div>
+    <div class="w-25">{{output.data.discount}}%</div>
+  </div>
+  <div class="d-flex p-1 border-top">
+    <div class="w-75 fw-bold">Total</div>
+    <div class="w-25 fw-bold">{{output.data.total}}</div>
+  </div>
+  <div class="d-flex p-1">
+    <div class="w-75">Paid</div>
+    <div class="w-25">{{output.data.paid}}</div>
+  </div>
+  <div class="d-flex p-1">
+    <div class="w-75">Change</div>
+    <div class="w-25">{{(output.data.paid - output.data.total) | number}}</div>
+  </div>
+</div>

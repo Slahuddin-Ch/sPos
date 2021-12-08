@@ -1,51 +1,148 @@
-import { Component, OnInit, AfterContentChecked, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, AfterContentChecked, ViewChild, OnDestroy, ElementRef, AfterViewInit, Renderer2 } from '@angular/core';
+import { AlertService, StorageService, HttpService } from '../_services';
+import { Router } from '@angular/router';
+import BarcodeScanner from "simple-barcode-scanner";
+const scanner = BarcodeScanner();
+
 @Component({
   selector: 'app-main-screen',
   templateUrl: './main-screen.component.html',
   styleUrls: ['./main-screen.component.css']
 })
-export class MainScreenComponent implements OnInit, AfterContentChecked {
-  public qty_statue : boolean = false;
-  public quantity : Number = 1;
+export class MainScreenComponent implements OnInit, AfterViewInit, AfterContentChecked, OnDestroy {
+  @ViewChild('posCartList') private posCartList?: ElementRef;
+  public clock : Date = new Date(Date.now());
+
+  public listeners : any = [];
+  public price : any = {state : false, value: 0, mode:'new'};
   public cartList : any = [];
   public total : Number = 0;
-  constructor() { }
+  public is_edit : any = {state: false, index: ''};
+  constructor(
+    private rendrer: Renderer2,
+    private alert: AlertService, 
+    private storage: StorageService,
+    private http : HttpService,
+    private route: Router) { }
   ngOnInit() {
+    let items : any = this.storage.getCartList();
+    let total : any = this.storage.getTotal();
+    this.cartList = JSON.parse(items) || [];
+    this.total    = total || 0;
+    scanner.on((code, event) => {
+      event.preventDefault();
+      this.alert.spinner('Finding');
+      this.http.findOneProduct(code).subscribe(
+        (res : any) => {
+          let product = {name: res.name, price: res.price, qty: 1, tax: res.tax, cat_id: res.cat_id};
+          this.cartList.push(product);
+          this.alert.clear();
+        },
+        (err : any) => {this.alert.error(err)}
+      );
+    });
+  }
+  ngAfterViewInit(){
+    this.startTime(this);
   }
   ngAfterContentChecked(){
     if(this.cartList.length>0){
-      let sum = 0;
+      let sum : any = 0;
       this.cartList.forEach((item : any) => {
         sum += item.qty*item.price;
       });
-      this.total = sum;
+      this.total = sum.toFixed(2);
     }else{
       this.total = 0;
     }
-    
   }
-  handleQty(event : any){
-    this.quantity = parseInt(event);
-    this.qty_statue = false;
+  onPriceChange(amount : any){
+    this.price = {state : false, value: amount, mode: this.price.mode};
   }
-  handleProduct(event : any){
+  onCategoryChoose(event : any){
+    this.alert.clear();
     let product : any = event;
-    product.qty = this.quantity;
-    this.quantity = 1;
-    this.qty_statue = true;
-    let is_exist = false;
-    for (let index = 0; index < this.cartList.length; index++) {
-      const item = this.cartList[index];
-      if(item.id===product.id){
-        this.cartList[index].qty +=1;
-        is_exist = true;
-      }
+    product.qty = 1;
+    if(this.toPound(this.price.value)>0)
+      product.price = this.toPound(this.price.value);
+    this.price = {state : true, value: 0, mode:'new'};
+    if([0, '0', '', null, undefined].includes(product.price)){
+      this.alert.error(product.name+' price cannot be 0');
+      return;
     }
-    if(!is_exist)
-      this.cartList.push(product);
+    this.cartList.push(product);
+    this.scrollCartList();
   }
   removeFromCart(id : any, index : any){
-    this.cartList.splice(index, 1);
+    let temp = this.cartList;
+    temp.splice(index, 1);
+    this.cartList = [];
+    temp.forEach((item : any) => {
+      this.cartList.push(item);
+    });
+  }
+  editCartItem(index : any){
+    const item = this.cartList[index];
+    this.is_edit = {state: true, index: index};
+    console.log(item.price*100);
+    this.price   = {state : false, value: this.toPence(item.price), mode:'edit'};
+  }
+  editCartItemAction(method : any){
+    if(method==='cancel'){
+      this.is_edit = {state: false, index: ''};
+    }else{
+      this.cartList[this.is_edit.index].price = this.toPound(this.price.value);
+      this.is_edit = {state: false, index: ''};
+    }
+    this.price   = {state : true, value: 0, mode:'new'};
+  }
+  checkout(){
+    this.storage.saveCartList(JSON.stringify(this.cartList));
+    this.storage.saveTotal(this.total);
+    this.route.navigate(['checkout']);
+  }
+  clearCart(){
+    this.storage.clearCart();
+    this.cartList = [];
+    this.price = {state : true, value: 0, mode: 'new'};
+  }
+  /*********************************************************************
+   * Quantity Counter
+   * @param index Index/Id of item
+   * @param method (add, minus)
+  **********************************************************************/
+  changeQuantity(index : any, method : any){
+    if(method==='add'){
+      this.cartList[index].qty++;
+    }else{
+      if(this.cartList[index].qty>1)
+        this.cartList[index].qty--;
+    }
   }
 
+  toPound(val : any){ return (parseInt(val)/100)}
+  toPence(val : any){ return parseFloat(val)*100}
+  
+  scrollCartList(){
+    if(this.posCartList){
+      var scrollingElement = this.posCartList.nativeElement;
+      scrollingElement.scrollTop = scrollingElement.scrollHeight;
+    }
+  }
+  logout(){
+    this.storage.logout();
+  }
+  ngOnDestroy(){
+    // Remove Bar Code listener
+    scanner.off();
+  }
+
+  startTime($this : MainScreenComponent) {
+    try {
+      this.clock = new Date(Date.now());
+      setTimeout(() => {$this.startTime($this)}, 1000);
+    } catch (error : any) {
+      console.log(error.message);
+    }
+  }
 }

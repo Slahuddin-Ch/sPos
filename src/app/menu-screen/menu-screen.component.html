@@ -1,0 +1,105 @@
+<div class="pos-screen">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="screen-col col-3">
+        <div class="sidebar bg-white rounded border p-3">
+          <ul class="list-unstyled m-0 h-100">
+            <li><button class="active" #sidebarLink data-tab="categories">Categories</button></li>
+            <li><button #sidebarLink data-tab="products">Products</button></li>
+            <li><button #sidebarLink data-tab="sales">Sales</button></li>
+            <li><button #sidebarLink data-tab="report">Report</button></li>
+            <li><button routerLink="/" class="bg-danger text-white text-center">Back</button></li>
+          </ul>
+        </div>
+      </div>
+      <div class="screen-col col-9">
+        <div class="tab">
+          <div class="tab-heading text-capitalize"><h2 class="m-0 fs-1">{{currentTab}}</h2></div>
+          <!-- Categories -->
+          <ng-container *ngIf="currentTab==='categories'">
+            <div class="tab-body">
+              <!-- Category Add/Edit -->
+              <ng-container *ngIf="output.mode=='new' || output.mode=='edit'">
+                <form [formGroup]="catForm">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="form-group mb-3">
+                        <div class="form-floating">
+                          <input type="text" formControlName="name" class="form-control" id="cat-name" placeholder="Enter Category Name">
+                          <label for="cat-name">Category Name</label>
+                        </div>
+                        <div *ngIf="(catForm.get('name')?.dirty || catForm.get('name')?.touched) && catForm.get('name')?.invalid">
+                          <span *ngIf="catForm.get('name')?.hasError('required')" class="text-danger">This field is required</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <label class="form-label d-block">Tax Includes?</label>
+                      <div class="form-check tax-radio form-check-inline">
+                        <input class="form-check-input" type="radio" formControlName="tax" id="tax-0" value="0">
+                        <label class="form-check-label" for="tax-0">0%</label>
+                      </div>
+                      <div class="form-check tax-radio form-check-inline">
+                        <input class="form-check-input" type="radio" formControlName="tax" id="tax-5" value="5">
+                        <label class="form-check-label" for="tax-5">5%</label>
+                      </div>
+                      <div class="form-check tax-radio form-check-inline">
+                        <input class="form-check-input" type="radio" formControlName="tax" id="tax-20" value="20">
+                        <label class="form-check-label" for="tax-20">20%</label>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </ng-container>
+              <!-- Category View [LIST] -->
+              <ng-container *ngIf="output.mode=='view'">
+                <div class="cat-table-heading d-flex bg-primary text-white p-2 fw-bold">
+                  <div class="w-50">Name</div>
+                  <div class="w-25">Tax</div>
+                  <div class="w-25">Action</div>
+                </div>
+                <div class="cat-table-body w-100">
+                  <ng-container *ngIf="output.data!=='' && output.data?.length>0">
+                    <div class="d-flex text-dark p-2 align-items-center border-bottom" *ngFor="let cat of output.data">
+                      <div class="w-50 text-capitalize">{{cat.name}}</div>
+                      <div class="w-25">{{cat.tax}}%</div>
+                      <div class="w-25">
+                        <button (click)="catFormGroup(cat);output.mode='edit'" class="btn btn-edit text-primary me-1"><i class="fas fa-pencil-alt"></i> Edit</button>
+                        <button (click)="action('delete', {id: cat._id})" class="btn btn-delete text-danger"><i class="fas fa-trash"></i> Delete</button>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="output.data==='' || output.data?.length===0">
+                    <h4 class="text-center mt-3 text-muted">No Category Found</h4>
+                  </ng-container>
+                </div>
+              </ng-container>
+            </div>
+            <div class="tab-footer">
+              <div class="row h-100">
+                <div class="col-6 text-start">
+                  <button *ngIf="output.mode=='view'" (click)="catFormGroup(); output.mode='new';" class="btn btn-primary fs-2"><i class="fas fa-plus"></i> New</button>
+                  <button *ngIf="output.mode=='new' || output.mode=='edit'" (click)="output.mode='view'" class="btn btn-danger fs-2"><i class="fas fa-times"></i> Cancel</button>
+                </div>
+                <div class="col-6 text-end">
+                  <button (click)="action('save')"   [disabled]="!catForm.valid" *ngIf="output.mode=='new'" class="btn btn-primary fs-2"><i class="fas fa-save"></i> Save</button>
+                  <button (click)="action('update')" [disabled]="!catForm.valid" *ngIf="output.mode=='edit'" class="btn btn-primary fs-2"><i class="fas fa-save"></i> Update</button>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="currentTab==='products'">
+            <app-products></app-products>
+          </ng-container>
+          <ng-container *ngIf="currentTab==='sales'">
+            <app-sales></app-sales>
+          </ng-container>
+          <ng-container *ngIf="currentTab==='report'">
+            <app-reports></app-reports>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      

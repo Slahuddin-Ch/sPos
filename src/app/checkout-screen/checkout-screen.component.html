@@ -1,0 +1,65 @@
+<div class="pos-screen">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="screen-col col-4">
+        <app-price (onPriceChange)="onPriceChange($event)" [state]=price></app-price>
+        <div class="button-container">
+          <button [disabled]="checkout.total===0" (click)="onDiscountChange()" class="btn btn-lg w-100 fs-2 btn-primary"><i class="fas fa-percent"></i> Discount</button>
+          <button [disabled]="checkout.total===0" class="btn btn-lg w-100 fs-2 btn-warning"><i class="fas fa-pause"></i> Hold</button>
+          <button routerLink="/" class="btn btn-lg w-100 fs-2 btn-danger"><i class="fas fa-chevron-left"></i> Back</button>
+        </div>
+      </div>
+      <div class="screen-col col-8">
+        <div class="total-container bg-white border p-3 h-100">
+          <div class="total-details">
+            <div class="row align-items-center mb-3">
+              <label class="col-sm-4 fs-4 text-end col-form-label">Sub-Total:</label>
+              <div class="col-sm-8">
+                <input type="text" readonly class="form-control fs-4 text-end" value="{{checkout.subtotal}}">
+              </div>
+            </div>
+            <div class="row align-items-center mb-3">
+              <label class="col-sm-9 fs-4 text-end col-form-label">Discount:</label>
+              <div class="col-sm-3">
+                <input type="text" readonly class="form-control fs-4 text-end" value="{{checkout.discount}}%">
+              </div>
+            </div>
+            <div class="row align-items-center mb-3">
+              <label class="col-sm-4 fs-4 text-end col-form-label">To Pay:</label>
+              <div class="col-sm-8">
+                <input type="text" readonly class="form-control fs-4 text-end" value="{{calculateTotal()}}">
+              </div>
+            </div>
+            <div class="row align-items-center mb-3">
+              <label class="col-sm-4 fs-4 text-end col-form-label">Paid:</label>
+              <div class="col-sm-8">
+                <input type="text" readonly class="form-control fs-4 text-end" value="{{checkout.paid}}">
+              </div>
+            </div>
+            <div class="row align-items-center mb-3">
+              <label class="col-sm-4 fs-4 text-end col-form-label">Change:</label>
+              <div class="col-sm-8">
+                <input type="text" readonly class="form-control fs-4 text-end" value="{{(checkout.paid===0) ? 0 : checkout.paid-calculateTotal() | number}}">
+              </div>
+            </div>
+          </div>
+          <div class="total-paid-quick">
+            <button [disabled]="checkout.subtotal===0" (click)="setPaidAmount(calculateTotal())" class="btn btn-info fs-1">£ {{calculateTotal()}}</button>
+            <button [disabled]="checkout.subtotal===0" (click)="setPaidAmount(1)" class="btn btn-info fs-1">£ 1</button>
+            <button [disabled]="checkout.subtotal===0" (click)="setPaidAmount(2)" class="btn btn-info fs-1">£ 2</button>
+            <button [disabled]="checkout.subtotal===0" (click)="setPaidAmount(5)" class="btn btn-info fs-1">£ 5</button>
+            <button [disabled]="checkout.subtotal===0" (click)="setPaidAmount(10)" class="btn btn-info fs-1">£ 10</button>
+            <button [disabled]="checkout.subtotal===0" (click)="setPaidAmount(20)" class="btn btn-info fs-1">£ 20</button>
+            <button [disabled]="checkout.subtotal===0" (click)="setPaidAmount(50)" class="btn btn-info fs-1">£ 50</button>
+            <button [disabled]="checkout.subtotal===0 || price.value===0" (click)="setPaidAmount()" class="btn btn-success fs-1">Enter</button>
+          </div>
+        </div>
+        <div class="total-button-container h-100">
+          <button [disabled]="checkout.subtotal===0" class="btn btn-primary fs-2"><i class="fas fa-columns"></i> Split Payment</button>
+          <button [disabled]="checkout.subtotal===0" (click)="onPayment('card')" class="btn btn-primary fs-2"><i class="far fa-credit-card"></i> Credit Card</button>
+          <button [disabled]="checkout.subtotal===0" (click)="onPayment('cash')" class="btn btn-primary fs-2"><i class="fas fa-coins"></i> Cash</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

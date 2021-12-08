@@ -1,0 +1,6 @@
+.spos-table{overflow-y: auto; overflow-x: hidden;}
+
+
+
+.form-floating .ng-touched.ng-invalid+label{color: var(--bs-danger);}
+.form-floating .ng-valid+label{color: var(--primary);}

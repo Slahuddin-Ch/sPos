@@ -1,0 +1,73 @@
+.sidebar,
+.tab{
+    height: var(--main-screen);
+    overflow-y: auto;
+}
+.sidebar li{margin-bottom: 10px;height:15%}
+.sidebar button{
+    width: 100%;
+    height: 100%;
+    font-size: 28px;
+    background-color: var(--primary-rgba-30);
+    color: black;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    padding: 5px 20px;
+}
+.sidebar button:focus,
+.sidebar button:hover,
+.sidebar button.active{
+    background-color: var(--primary);
+    color: white;
+}
+
+.tab .tab-heading{
+    max-height: 7%; 
+    height: 7%; 
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+.tab .tab-body{
+    max-height: 83%; 
+    height: 83%; 
+    overflow: hidden;
+}
+.tab .tab-body .cat-table-heading{height: 40px;}
+.tab .tab-body .cat-table-body{
+    height: calc((var(--main-screen) - 17%) - 100px) !important;
+    overflow-y: auto;
+    background-color: white;
+}
+.tab .tab-footer{
+    max-height: 10%; 
+    height: 10%; 
+    overflow: hidden;
+}
+.tab .tab-footer button{
+    height: 100%;
+    width: calc(100%/2);
+}
+
+
+.tax-radio{
+    padding: 0px !important;
+    margin: 0px !important;
+    width: calc(96%/3);
+    text-align: center;
+}
+.tax-radio:nth-child(3){margin: 0px 2% !important;}
+.tax-radio .form-check-input{display: none;}
+.tax-radio .form-check-input+.form-check-label{
+    width: 100%;
+    padding: 10%;
+    background-color: var(--primary-rgba-30);
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.tax-radio .form-check-input:checked+.form-check-label{
+    background-color: var(--primary);
+}
