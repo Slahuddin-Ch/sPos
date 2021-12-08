@@ -13,7 +13,6 @@ export class CategoryListComponent implements OnChanges {
   public CATEGORIES : any = [];
 
   constructor(
-    private rendrer : Renderer2,
     private alert : AlertService,
     private http: HttpService,
     private storage: StorageService) { }
@@ -28,9 +27,6 @@ export class CategoryListComponent implements OnChanges {
         (res : any) => {
           this.storage.saveLocalCategories(JSON.stringify(res));
           this.CATEGORIES = res;
-          setTimeout(() => {
-            this.initEventListner();
-          }, 100);
         },
         (err : any) => {this.alert.error(err)}
       );
@@ -39,18 +35,12 @@ export class CategoryListComponent implements OnChanges {
   ngOnChanges(changes : SimpleChanges){
     this.mode = changes.mode.currentValue;
   }
-  initEventListner(){
-    this.categories?.toArray().forEach( (category : ElementRef) => {
-      this.rendrer.listen(category.nativeElement, 'click', event => {this.addToCart(event)});
-    });
-  }
-  addToCart(event : any){
-    const cat    = event.target;
-    const data   = cat?.dataset;
+
+  addToCart(cat : any){
     const detail = {
-      id  : data.index,
-      name: data.name,
-      tax : data.tax
+      cat_id : cat._id,
+      name : cat.name,
+      tax  : cat.tax
     }
     this.onCategoryChoose.emit(detail);
   }

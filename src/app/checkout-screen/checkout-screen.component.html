@@ -39,7 +39,7 @@
             <div class="row align-items-center mb-3">
               <label class="col-sm-4 fs-4 text-end col-form-label">Change:</label>
               <div class="col-sm-8">
-                <input type="text" readonly class="form-control fs-4 text-end" value="{{(checkout.paid===0) ? 0 : checkout.paid-calculateTotal()}}">
+                <input type="text" readonly class="form-control fs-4 text-end" value="{{(checkout.paid===0) ? 0 : checkout.paid-calculateTotal() | number}}">
               </div>
             </div>
           </div>

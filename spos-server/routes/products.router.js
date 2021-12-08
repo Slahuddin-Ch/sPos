@@ -31,11 +31,17 @@ router.get("/one", auth, async (req, res) => {
     try {
         const product = await Products.findOne(query);
         if(product){
-            return res.status(res.statusCode).json(product)
+            const cat = await Category.findById(product.cat_id);
+            const response = {
+                name   : product.name,
+                price  : product.price,
+                cat_id : product.cat_id,
+                tax    : cat.tax
+            }
+            return res.status(200).json(response);
         }else{
             return res.status(401).json({message: 'Product not found'});
         }
-        
     } catch (error) {
         return res.status(res.statusCode).json({message : error.message});
     }

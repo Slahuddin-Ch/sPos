@@ -1,9 +1,8 @@
 
 
 .button-container{height: calc((var(--main-screen) - 60%));}
-.button-container button{
-    height: 45%;
-}
+.button-container button{height: 48%;}
+.button-container button:first-child{margin: 2% 0px;}
 
 /**/
 

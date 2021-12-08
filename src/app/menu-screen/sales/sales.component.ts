@@ -16,7 +16,7 @@ export class SalesComponent implements OnInit {
     private fb : FormBuilder,
     private alert: AlertService,
     private receipt: ReceiptService,
-    private http : HttpService,) { 
+    private http : HttpService) { 
       this.filterForm = this.fb.group({
         to : [null],
         from: [null],

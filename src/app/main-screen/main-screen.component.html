@@ -3,9 +3,9 @@
     <div class="row">
       <div class="screen-col col-3">
         <app-price (onPriceChange)="onPriceChange($event)" [state]=price></app-price>
-        <div class="button-container py-3">
-          <button [disabled]="is_edit.state" routerLink="menu" class="btn btn-lg w-100 fs-1 btn-primary"><i class="fas fa-bars"></i> Menu</button>
-          <button [disabled]="is_edit.state" (click)="logout()" class="btn btn-lg w-100 fs-1 mt-2 btn-danger"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        <div class="button-container">
+          <button [disabled]="is_edit.state" routerLink="menu" class="btn btn-lg w-100 fs-1 btn-primary"><i class="fas fa-th"></i> Menu</button>
+          <button [disabled]="is_edit.state" (click)="logout()" class="btn btn-lg w-100 fs-1 btn-danger"><i class="fas fa-power-off"></i> Logout</button>
         </div>
       </div>
       <div class="screen-col col-3">
@@ -70,6 +70,10 @@
 <!--Footer-->
 <div class="pos-footer bg-dark h-100 text-white p-1">
   <div class="container-fluid">
-    <p class="m-0 fs-5">Footer Text</p>
+    <div class="row">
+      <div class="col-6"><p class="m-0 fs-5">SPOS : {{clock | date: 'medium'}}</p></div>
+      <div class="col-6 text-end"><p class="m-0 fs-5">D&D With <i class="fas fa-heart text-primary"></i> by GoalBytes</p></div>
+    </div>
+    
   </div>
 </div>

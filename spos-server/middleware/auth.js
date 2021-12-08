@@ -1,5 +1,5 @@
-const jwt = require("jsonwebtoken");
-const SERVER_TOKEN_KEY = '12345678%#@)&fr';
+const jwt    = require("jsonwebtoken");
+const config = require('../config/config');
 
 const verifyToken = (req, res, next) => {
   const token =
@@ -9,7 +9,7 @@ const verifyToken = (req, res, next) => {
     return res.status(403).json({code: "TOKEN_MISSING", message: "A token is required for authentication. Please login again & try."});
   }
   try {
-    const decoded = jwt.verify(token, SERVER_TOKEN_KEY);
+    const decoded = jwt.verify(token, config.SERVER_TOKEN_KEY);
     req.user = decoded;
   } catch (err) {
     return res.status(403).json({code: "TOKEN_EXPIRED", message: "Session Expired. Kindly Login again to continue"});

@@ -18,6 +18,23 @@ export class HttpService {
   login(data : any){
     return this.http.post(SERVER_URL + '/user/login', data, OPTIONS);
   }
+  register(data : any){
+    return this.http.post(SERVER_URL + '/user/register', data, OPTIONS);
+  }
+  getUsers(){
+    return this.http.get(SERVER_URL + '/user/all', OPTIONS);
+  }
+  updateUsers(data : any){
+    return this.http.post(SERVER_URL + '/user/update', data, OPTIONS);
+  }
+  deleteUsers(id : any){
+    let params = new HttpParams();
+    params = params.append('id', id);
+    return this.http.get(SERVER_URL+'/user/delete', {params : params, headers : OPTIONS.headers});
+  }
+  updatePassword(password : any){
+    return this.http.post(SERVER_URL + '/user/password-update', password, OPTIONS);
+  }
   /********************************************************************************
    * Category Functions
   *********************************************************************************/
@@ -65,5 +82,14 @@ export class HttpService {
   }
   newSale(sale : any){
     return this.http.post(SERVER_URL+'/sales/add', sale, OPTIONS);
+  }
+  /********************************************************************************
+   * Admin Sales Functions
+  *********************************************************************************/
+  getBusinessSales(filter : any){
+    return this.http.post(SERVER_URL + '/sales/total', filter, OPTIONS);
+  }
+  deleteBusinessSales(data : any){
+    return this.http.post(SERVER_URL + '/sales/delete', data, OPTIONS);
   }
 }

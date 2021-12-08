@@ -13,6 +13,7 @@
               <td>Product</td>
               <td>Qty</td>
               <td>Price</td>
+              <td>Vat</td>
             </tr>
           </thead>
           <tbody *ngIf="output?.data?.items">
@@ -20,6 +21,7 @@
               <td>{{item.name}}</td>
               <td>{{item.qty}}</td>
               <td>{{item.price}}</td>
+              <td>{{item.tax}}%</td>
             </tr>
             <tr class="border-top">
               <td class="fw-bold" colspan="2">SubTotal</td>
@@ -56,16 +58,23 @@
 
 
 <div class="w-100 print-table" *ngIf="output?.data">
+  <div class="business-info">
+    <div class="business-name fs-3 text-center">Business Name</div>
+    <div class="business-address text-center">Business Address</div>
+    <div class="invoice-time">Genrated On: DATE</div>
+  </div>
   <div class="d-flex p-1">
     <div class="w-50 fw-bold">Product</div>
-    <div class="w-25 fw-bold">Qty</div>
-    <div class="w-25 fw-bold">Price</div>
+    <div class="w-20 fw-bold">Qty</div>
+    <div class="w-20 fw-bold">Price</div>
+    <div class="w-10 fw-bold">Vat</div>
   </div>
   <ng-container *ngIf="output?.data?.items">
     <div class="d-flex p-1 border-bottom" *ngFor="let item of items">
       <div class="w-50">{{item.name}}</div>
-      <div class="w-25">{{item.qty}}</div>
-      <div class="w-25">{{item.price}}</div>
+      <div class="w-20">{{item.qty}}</div>
+      <div class="w-20">{{item.price}}</div>
+      <div class="w-10">{{item.tax}}%</div>
     </div>
   </ng-container>
   <div class="d-flex p-1">
@@ -89,41 +98,3 @@
     <div class="w-25">{{(output.data.paid - output.data.total) | number}}</div>
   </div>
 </div>
-<!--
-<table class="print-table" width="100%" cellpadding="0" cellspacing="1" border="1">
-  <thead>
-    <tr>
-      <td width="50%">Product</td>
-      <td width="25%">Qty</td>
-      <td width="25%">Price</td>
-    </tr>
-  </thead>
-  <tbody *ngIf="output?.data?.items">
-    <tr *ngFor="let item of items">
-      <td>{{item.name}}</td>
-      <td>{{item.qty}}</td>
-      <td>{{item.price}}</td>
-    </tr>
-    <tr class="border-top">
-      <td class="fw-bold" colspan="2">SubTotal</td>
-      <td>{{output.data.subtotal}}</td>
-    </tr>
-    <tr>
-      <td colspan="2">Discount</td>
-      <td>-{{output.data.discount}}%</td>
-    </tr>
-    <tr>
-      <td class="fw-bold" colspan="2">Total</td>
-      <td>{{output.data.total}}</td>
-    </tr>
-    <tr>
-      <td class="fw-bold" colspan="2">Paid</td>
-      <td>{{output.data.paid}}</td>
-    </tr>
-    <tr>
-      <td class="fw-bold" colspan="2">Change</td>
-      <td>{{(output.data.paid - output.data.total) | number}}</td>
-    </tr>
-  </tbody>
-</table>
--->

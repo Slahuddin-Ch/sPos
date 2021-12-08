@@ -8,6 +8,6 @@ const scheme = new mongoose.Schema({
   paid        : { type: String, required: true },
   method      : { type: String, required: true, lowercase: true },
   items       : { type: String, required: true},
-  created_date: { type: String, default: new Date(Date.now()) },
+  created_date: { type: String, default: new Date(Date.now()).toISOString() },
 });
 module.exports = mongoose.model("sales", scheme);

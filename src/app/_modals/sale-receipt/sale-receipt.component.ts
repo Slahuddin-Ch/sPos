@@ -18,12 +18,12 @@ export class SaleReceiptComponent implements AfterViewInit {
     this.subscription = this.receipt.getReceipt().subscribe(
       (res : any) => {
         this.output = res;
-        console.log(typeof this.output.data.items);
         if(typeof this.output.data.items==='string'){
           this.items = JSON.parse(this.output.data.items) || [];
         }else{
           this.items = this.output.data.items;
         }
+        console.log(this.items);
         if(this.output.type==='show'){
           this.showModal();
         }else{

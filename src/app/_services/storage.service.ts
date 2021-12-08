@@ -23,9 +23,9 @@ export class StorageService {
    * User Functions
   ***********************************************************************/
   getUser(){ return sessionStorage.getItem(USER) }
-  saveUser(user : any){ 
-    sessionStorage.setItem(USER, user);
-    this.user.next(user);
+  saveUser(data : any){ 
+    sessionStorage.setItem(USER, JSON.stringify(data));
+    this.user.next(data);
   }
   getUserToken(){ return sessionStorage.getItem(USER_TOKEN) }
   saveUserToken(token : any){ sessionStorage.setItem(USER_TOKEN, token) }

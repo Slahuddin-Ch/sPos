@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterContentChecked, ViewChild, OnDestroy, ElementRef, ViewChildren, QueryList, Renderer2 } from '@angular/core';
+import { Component, OnInit, AfterContentChecked, ViewChild, OnDestroy, ElementRef, AfterViewInit, Renderer2 } from '@angular/core';
 import { AlertService, StorageService, HttpService } from '../_services';
 import { Router } from '@angular/router';
 import BarcodeScanner from "simple-barcode-scanner";
@@ -9,14 +9,17 @@ const scanner = BarcodeScanner();
   templateUrl: './main-screen.component.html',
   styleUrls: ['./main-screen.component.css']
 })
-export class MainScreenComponent implements OnInit, AfterContentChecked, OnDestroy {
+export class MainScreenComponent implements OnInit, AfterViewInit, AfterContentChecked, OnDestroy {
   @ViewChild('posCartList') private posCartList?: ElementRef;
+  public clock : Date = new Date(Date.now());
+
   public listeners : any = [];
   public price : any = {state : false, value: 0, mode:'new'};
   public cartList : any = [];
   public total : Number = 0;
   public is_edit : any = {state: false, index: ''};
   constructor(
+    private rendrer: Renderer2,
     private alert: AlertService, 
     private storage: StorageService,
     private http : HttpService,
@@ -31,13 +34,16 @@ export class MainScreenComponent implements OnInit, AfterContentChecked, OnDestr
       this.alert.spinner('Finding');
       this.http.findOneProduct(code).subscribe(
         (res : any) => {
-          let product = {name: res.name, price: res.price, qty: 1};
+          let product = {name: res.name, price: res.price, qty: 1, tax: res.tax, cat_id: res.cat_id};
           this.cartList.push(product);
           this.alert.clear();
         },
         (err : any) => {this.alert.error(err)}
       );
     });
+  }
+  ngAfterViewInit(){
+    this.startTime(this);
   }
   ngAfterContentChecked(){
     if(this.cartList.length>0){
@@ -54,13 +60,14 @@ export class MainScreenComponent implements OnInit, AfterContentChecked, OnDestr
     this.price = {state : false, value: amount, mode: this.price.mode};
   }
   onCategoryChoose(event : any){
+    this.alert.clear();
     let product : any = event;
     product.qty = 1;
     if(this.toPound(this.price.value)>0)
       product.price = this.toPound(this.price.value);
     this.price = {state : true, value: 0, mode:'new'};
     if([0, '0', '', null, undefined].includes(product.price)){
-      this.alert.error('Price Cannot be 0');
+      this.alert.error(product.name+' price cannot be 0');
       return;
     }
     this.cartList.push(product);
@@ -129,5 +136,13 @@ export class MainScreenComponent implements OnInit, AfterContentChecked, OnDestr
     // Remove Bar Code listener
     scanner.off();
   }
-  
+
+  startTime($this : MainScreenComponent) {
+    try {
+      this.clock = new Date(Date.now());
+      setTimeout(() => {$this.startTime($this)}, 1000);
+    } catch (error : any) {
+      console.log(error.message);
+    }
+  }
 }

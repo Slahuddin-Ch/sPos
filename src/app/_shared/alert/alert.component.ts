@@ -11,11 +11,21 @@ export class AlertComponent implements OnInit {
   private subscription?: Subscription;
   constructor(private alert : AlertService) { }
   public message: any = {type: '', text: ''}; 
+  timeout : any = null;
   // Type: spinner
 
   ngOnInit() {
     this.subscription = this.alert.getAlert().subscribe(
-      (message : any) => { this.message = message; }
+      (message : any) => { 
+        this.message = message; 
+        // Hide alert after 3 seconds.
+        clearTimeout(this.timeout);
+        if(this.message.type==='success' || this.message.type==='error'){
+          this.timeout = setTimeout(()=>{
+            this.message = {type: '', text: ''}; 
+          }, 3000)
+        }
+      }
     );
   }
 
