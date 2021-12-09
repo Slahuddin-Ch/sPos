@@ -7,6 +7,7 @@ const CART_TOTAL = 'cart-total';
 const USER       = 'curr-user';
 const USER_TOKEN = 'curr-user-token';
 const CATEGORIES = 'categories';
+const HOLD_SALES = 'hold-sales';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,8 @@ export class StorageService {
   /**********************************************************************
    * User Functions
   ***********************************************************************/
-  getUser(){ return sessionStorage.getItem(USER) }
+  getUser() : any { return sessionStorage.getItem(USER) }
+  
   saveUser(data : any){ 
     sessionStorage.setItem(USER, JSON.stringify(data));
     this.user.next(data);
@@ -54,4 +56,22 @@ export class StorageService {
   getLocalCategories(){ return sessionStorage.getItem(CATEGORIES) || [] }
   saveLocalCategories(cats : any){ sessionStorage.setItem(CATEGORIES, cats) }
   clearLocalCategories(){ sessionStorage.removeItem(CATEGORIES); }
+  /**********************************************************************
+   * Hold Sales Functions
+  ***********************************************************************/
+  getHoldSales() : any{
+    let sale = localStorage.getItem(HOLD_SALES);
+    return (sale) ? JSON.parse(sale) : [] as any;
+  }
+  saveHoldSales(list : any){
+    let sale : any = this.getHoldSales();
+    sale.push({date: new Date(Date.now()), data:list});
+    localStorage.setItem(HOLD_SALES, JSON.stringify(sale));
+  }
+  removeHoldSale(index : any){
+    let sale : any = this.getHoldSales();
+    sale.splice(index, 1);
+    localStorage.setItem(HOLD_SALES, JSON.stringify(sale));
+    return sale;
+  }
 }

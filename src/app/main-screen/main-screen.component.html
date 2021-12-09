@@ -52,7 +52,7 @@
         <div class="cart-buttons">
           <div class="d-flex h-100">
             <div class="w-50">
-              <button [disabled]="is_edit.state || cartList.length===0" class="btn btn-warning"><i class="fas fa-receipt"></i> RECEIPT</button>
+              <button (click)="viewReceipt()" [disabled]="is_edit.state || cartList.length===0" class="btn btn-warning"><i class="fas fa-receipt"></i> RECEIPT</button>
               <button (click)="editCartItemAction('save')" [disabled]="!is_edit.state" class="btn btn-success"><i class="far fa-save"></i> ENTER</button>
               <button (click)="editCartItemAction('cancel')" [disabled]="!is_edit.state" class="btn btn-danger"><i class="far fa-times-circle"></i> CANCEL</button>
             </div>

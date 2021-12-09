@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterContentChecked, ViewChild, OnDestroy, ElementRef, AfterViewInit, Renderer2 } from '@angular/core';
-import { AlertService, StorageService, HttpService } from '../_services';
+import { AlertService, StorageService, HttpService, ReceiptService } from '../_services';
 import { Router } from '@angular/router';
 import BarcodeScanner from "simple-barcode-scanner";
 const scanner = BarcodeScanner();
@@ -19,7 +19,7 @@ export class MainScreenComponent implements OnInit, AfterViewInit, AfterContentC
   public total : Number = 0;
   public is_edit : any = {state: false, index: ''};
   constructor(
-    private rendrer: Renderer2,
+    private receipt: ReceiptService,
     private alert: AlertService, 
     private storage: StorageService,
     private http : HttpService,
@@ -105,6 +105,9 @@ export class MainScreenComponent implements OnInit, AfterViewInit, AfterContentC
     this.storage.clearCart();
     this.cartList = [];
     this.price = {state : true, value: 0, mode: 'new'};
+  }
+  viewReceipt(){
+    this.receipt.show({items : this.cartList});
   }
   /*********************************************************************
    * Quantity Counter

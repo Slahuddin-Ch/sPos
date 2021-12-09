@@ -8,9 +8,13 @@ import { StorageService } from '../_services';
 })
 
 export class AdminScreenComponent implements AfterViewInit {
-  public currentTab : any = 'sales';
+  public currentTab : any = 'dashboard';
+  public user : any;
 
-  constructor(private storage : StorageService) {}
+  constructor(private storage : StorageService) {
+    let usr : any = this.storage.getUser();
+    this.user = JSON.parse(usr);
+  }
 
   ngAfterViewInit() {}
 

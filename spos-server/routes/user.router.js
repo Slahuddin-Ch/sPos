@@ -25,8 +25,11 @@ router.post("/login", async (req, res) => {
                 bname    : user.bname,
                 bntn     : user.bntn,
                 username : user.username,
+                status   : user.status,
+                accounts : user.allowed,
                 token    : token,
-                role     : user.role
+                role     : user.role,
+                receipt_setting : user.receipt_setting
             };
             // return new user
             return res.status(200).json(response);
@@ -94,6 +97,36 @@ router.post("/update", admin_auth, async (req, res) => {
         }else{
             return res.status(401).json({message: error.message});
         }
+    }
+});
+
+router.put("/receipt-setting-update", auth, async (req, res) => {
+    const settings = req.body;
+    const uid = req.user.uid;
+    try {
+        // Update User
+        const user = await User.updateOne(
+            {_id : uid},
+            {receipt_setting  : settings}
+        );
+        return res.status(200).json(user);
+    } catch (error) {
+        return res.status(401).json({message: error.message});
+    }
+});
+
+router.put("/profile-update", auth, async (req, res) => {
+    const {bname, bntn} = req.body;
+    const uid = req.user.uid;
+    try {
+        // Update User
+        const user = await User.updateOne(
+            {_id : uid},
+            {bname, bntn}
+        );
+        return res.status(200).json(user);
+    } catch (error) {
+        return res.status(401).json({message: error.message});
     }
 });
 

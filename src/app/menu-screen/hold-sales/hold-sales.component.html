@@ -1,0 +1,32 @@
+<div class="tab-body p-4 bg-white rounded border">
+    <div class="text-center p-3" *ngIf="sales.length===0">
+        <i class="fas fa-times fa-4x"></i>
+        <h3>Empty List</h3>
+    </div>
+
+    <table class="table align-middle" *ngIf="sales.length>0">
+        <thead>
+            <tr>
+                <th>Hold On</th>
+                <th>Items (Price)</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let sale of sales; let i=index">
+                <td>
+                    {{sale.date | date : 'medium'}}
+                </td>
+                <td>
+                    <ul>
+                        <li *ngFor="let item of sale.data">{{item.name}} ({{item.price}})</li>
+                    </ul>
+                </td>
+                <td>
+                    <button (click)="goToCart(sale.data)" class="btn btn-edit text-primary"><i class="fas fa-eye"></i> view</button>
+                    <button (click)="removeHoldSale(i)" class="btn btn-delete ms-1 text-danger"><i class="fas fa-trash"></i> Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

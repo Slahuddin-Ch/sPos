@@ -29,7 +29,6 @@ export class CheckoutScreenComponent implements OnInit {
     this.checkout.subtotal = JSON.parse(total) || 0;
     this.cdr.detectChanges();
   }
-
   onPriceChange(amount : any){
     this.price = {state : false, value: amount};
   }
@@ -80,6 +79,11 @@ export class CheckoutScreenComponent implements OnInit {
         break;
     }
     
+  }
+  onHold(){
+    this.storage.saveHoldSales(this.checkout.items);
+    this.resetAll();
+    this.alert.success('Items added to Hold Sales');
   }
   resetAll(){
     this.checkout = {subtotal:0, total: 0, discount: 0, paid: 0, items: []};

@@ -17,7 +17,7 @@
           <div class="tab-heading bg-light fs-2 ps-3 border-bottom text-capitalize">{{currentTab}}</div>
           <div class="tab-content">
             <ng-container *ngIf="currentTab === 'dashboard'">
-              [DASBOARD]
+              <h5>Welcome, {{user.bname}}</h5>
             </ng-container>
             <ng-container *ngIf="currentTab === 'users'">
               <app-admin-manage-users></app-admin-manage-users>

@@ -7,8 +7,8 @@ const auth     = require('../middleware/auth');
 router.get("/all", auth, async (req, res) => {
     try {
         const uid   = req?.user.uid || '';
-        const query = {uid: uid};
         const products = await Products.aggregate([
+            { $match: { uid: uid } },
             { $lookup:
                 {
                     from: 'categories',

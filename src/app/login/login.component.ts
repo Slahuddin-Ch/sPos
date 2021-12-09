@@ -35,7 +35,11 @@ export class LoginComponent implements OnInit {
           this.storage.saveUser(res);
           this.storage.saveUserToken(res.token);
           this.alert.clear();
-          this.route.navigate(['/']);
+          if(res.role==='admin'){
+            this.route.navigate(['/admin']);
+          }else{
+            this.route.navigate(['/']);
+          }
         },
         (err : any) => {this.alert.error(err);}
       );

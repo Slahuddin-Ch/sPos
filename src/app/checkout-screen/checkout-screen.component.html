@@ -5,7 +5,7 @@
         <app-price (onPriceChange)="onPriceChange($event)" [state]=price></app-price>
         <div class="button-container">
           <button [disabled]="checkout.total===0" (click)="onDiscountChange()" class="btn btn-lg w-100 fs-2 btn-primary"><i class="fas fa-percent"></i> Discount</button>
-          <button [disabled]="checkout.total===0" class="btn btn-lg w-100 fs-2 btn-warning"><i class="fas fa-pause"></i> Hold</button>
+          <button [disabled]="checkout.total===0" (click)="onHold()" class="btn btn-lg w-100 fs-2 btn-warning"><i class="fas fa-pause"></i> Hold</button>
           <button routerLink="/" class="btn btn-lg w-100 fs-2 btn-danger"><i class="fas fa-chevron-left"></i> Back</button>
         </div>
       </div>

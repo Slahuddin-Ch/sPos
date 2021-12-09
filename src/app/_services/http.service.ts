@@ -35,6 +35,12 @@ export class HttpService {
   updatePassword(password : any){
     return this.http.post(SERVER_URL + '/user/password-update', password, OPTIONS);
   }
+  updateReceiptSettings(settings: any){
+    return this.http.put(SERVER_URL + '/user/receipt-setting-update', settings, OPTIONS);
+  }
+  updateProfile(data: any){
+    return this.http.put(SERVER_URL + '/user/profile-update', data, OPTIONS);
+  }
   /********************************************************************************
    * Category Functions
   *********************************************************************************/

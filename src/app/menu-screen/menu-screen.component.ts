@@ -8,7 +8,6 @@ import { HttpService, AlertService, StorageService } from '../_services';
   styleUrls: ['./menu-screen.component.css']
 })
 export class MenuScreenComponent implements OnInit, AfterViewInit {
-  @ViewChildren('sidebarLink') links? : QueryList<ElementRef>;
   public currentTab : any = 'categories';
   public output : any = {data : '', mode: ''};
   public selected_cat : any = '';
@@ -18,7 +17,6 @@ export class MenuScreenComponent implements OnInit, AfterViewInit {
     private fb  : FormBuilder,
     private alert: AlertService,
     private http : HttpService,
-    private rendrer: Renderer2,
     private storage : StorageService) { 
       this.catForm = this.fb.group({});
     }
@@ -34,21 +32,7 @@ export class MenuScreenComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.action('view');
   }
-  ngAfterViewInit(){
-    this.links?.toArray().forEach((link : ElementRef) => {
-      const el = link.nativeElement;
-      this.rendrer.listen(el, 'click', event => this.toggleTab(event));
-    });
-  }
-  toggleTab(event : Event){
-    const el  = (event.target) as HTMLElement;
-    const tab = el.dataset.tab;
-    this.links?.toArray().forEach((link : ElementRef) => {
-      this.rendrer.removeClass(link.nativeElement, 'active');
-    });
-    this.rendrer.addClass(el, 'active');
-    this.currentTab = tab;
-  }
+  ngAfterViewInit(){}
 
   action(mode : any, param : any = {}){
     switch (mode) {

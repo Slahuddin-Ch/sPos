@@ -1,0 +1,148 @@
+<div class="tab-body p-4 bg-white rounded border">
+  <div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingOne">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          <h5 class="m-0"><i class="fas fa-user"></i> Profile Settings</h5>
+        </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          <!--Profile Form-->
+          <form [formGroup]="profileForm" class="mb-3" (ngSubmit)="changeProfile()">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <input type="text" formControlName="bname" class="form-control" id="bname" placeholder="Enter Business Name">
+                  <label for="bname">Business Name</label>
+                  <div class="text-danger" *ngIf="pForm.get('bname')?.errors && (pForm.get('bname')?.touched || pForm.get('bname')?.dirty)">
+                    <span *ngIf="pForm.get('bname')?.hasError('required')">This field is required</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <input type="text" formControlName="bntn" class="form-control" id="bntn" placeholder="Enter Ntn/Registration No">
+                  <label for="bntn">Business NTN/Registration No.</label>
+                  <div class="text-danger" *ngIf="pForm.get('bntn')?.errors && (pForm.get('bntn')?.touched || pForm.get('bntn')?.dirty)">
+                    <span *ngIf="pForm.get('bntn')?.hasError('required')">This field is required</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <input type="text" readonly class="form-control text-capitalize" id="status" [value]="user.status">
+                  <label for="status">Profile Status</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <input type="text" readonly class="form-control" id="accounts" [value]="user.accounts">
+                  <label for="accounts">Accounts Allowed</label>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <button type="submit" [disabled]="!profileForm.valid" class="btn btn-primary d-block ms-auto"><i class="fas fa-save"></i> Update</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingTwo">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          <h5 class="m-0"><i class="fas fa-receipt"></i> Receipt Settings</h5>
+        </button>
+      </h2>
+      <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          <!--Receipt Form-->
+          <form [formGroup]="receiptForm" class="mb-3" (ngSubmit)="changeReceiptSetting()">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-check form-switch mb-2">
+                  <input class="form-check-input" formControlName="bname" type="checkbox" checked id="show_bname">
+                  <label class="form-check-label" for="show_bname">Show Business Name</label>
+                </div>
+                <div class="form-check form-switch mb-2">
+                  <input class="form-check-input" formControlName="bntn" type="checkbox" id="show_bntn">
+                  <label class="form-check-label" for="show_bntn">Show NTN/Registration Number</label>
+                </div>
+                <div class="form-check form-switch mb-2">
+                  <input class="form-check-input" formControlName="invoice_no" type="checkbox" id="show_invoice_no">
+                  <label class="form-check-label" for="show_invoice_no">Show Invoice Number</label>
+                </div>
+                <div class="form-check form-switch mb-2">
+                  <input class="form-check-input" formControlName="invoice_date" type="checkbox" id="show_date">
+                  <label class="form-check-label" for="show_date">Show Invoice Genrated Date</label>
+                </div>
+                <div class="form-check form-switch mb-2">
+                  <input class="form-check-input" formControlName="vat" type="checkbox" id="show_vat">
+                  <label class="form-check-label" for="show_vat">Show Vat Info</label>
+                </div>
+                <div class="form-check form-switch mb-2">
+                  <input class="form-check-input" formControlName="discount" type="checkbox" id="show_discount">
+                  <label class="form-check-label" for="show_discount">Show Discount Info</label>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <button type="submit" [disabled]="!receiptForm.valid" class="btn btn-primary d-block ms-auto"><i class="fas fa-save"></i> Update</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingThree">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+          <h5 class="m-0"><i class="fas fa-lock"></i> Update Password</h5>
+        </button>
+      </h2>
+      <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          <!--Password Form-->
+          <form [formGroup]="pForm" (ngSubmit)="changePassword()">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <input type="password" formControlName="cur_pass" class="form-control" id="cur_pass" placeholder="Password">
+                  <label for="cur_pass">Current Password</label>
+                  <div class="text-danger" *ngIf="pForm.get('cur_pass')?.errors && (pForm.get('cur_pass')?.touched || pForm.get('cur_pass')?.dirty)">
+                    <span *ngIf="pForm.get('cur_pass')?.hasError('required')">This field is required</span>
+                  </div>
+                </div>
+              </div>
+              <div class="w-100"></div>
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <input type="password" formControlName="new_pass" class="form-control" id="new_pass" placeholder="Password">
+                  <label for="new_pass">New Password</label>
+                  <div class="text-danger" *ngIf="pForm.get('new_pass')?.errors && (pForm.get('new_pass')?.touched || pForm.get('new_pass')?.dirty)">
+                    <span *ngIf="pForm.get('new_pass')?.hasError('required')">This field is required</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <input type="password" formControlName="cfn_pass" class="form-control" id="cfn_pass" placeholder="Password">
+                  <label for="cfn_pass">Confirm Password</label>
+                  <div class="text-danger" *ngIf="pForm.get('cfn_pass')?.errors && (pForm.get('cfn_pass')?.touched || pForm.get('cfn_pass')?.dirty)">
+                    <span *ngIf="pForm.get('cfn_pass')?.hasError('required')">This field is required</span>
+                  </div>
+                  <div class="text-danger" *ngIf="!pForm.get('cfn_pass')?.errors && (pForm.get('cfn_pass')?.touched || pForm.get('cfn_pass')?.dirty)">
+                    <span *ngIf="pForm?.errors?.passwordNotMatch">Password not matched</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <button type="submit" [disabled]="!pForm.valid" class="btn btn-primary d-block ms-auto"><i class="fas fa-save"></i> Update</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

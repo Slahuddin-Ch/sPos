@@ -1,0 +1,6 @@
+.tab-body{
+    max-height: 93%; 
+    height: 100%; 
+    width: 100%;
+    overflow-x: hidden;
+}
