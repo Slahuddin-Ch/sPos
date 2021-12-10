@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { Router } from '@angular/router';
+import { SocketService } from './';
 
 const CART_ITEMS = 'cart-items';
 const CART_TOTAL = 'cart-total';
@@ -15,7 +16,7 @@ const HOLD_SALES = 'hold-sales';
 export class StorageService {
   private user = new Subject<any>();
 
-  constructor(private route: Router) { }
+  constructor(private route: Router, private socket: SocketService) { }
 
   getUserStatus(): Observable<any> {
     return this.user.asObservable();
@@ -27,11 +28,13 @@ export class StorageService {
   
   saveUser(data : any){ 
     sessionStorage.setItem(USER, JSON.stringify(data));
+    this.socket.sendMessage('login');
     this.user.next(data);
   }
   getUserToken(){ return sessionStorage.getItem(USER_TOKEN) }
   saveUserToken(token : any){ sessionStorage.setItem(USER_TOKEN, token) }
   logout(){
+    this.socket.sendMessage('logout');
     sessionStorage.removeItem(USER_TOKEN);
     sessionStorage.removeItem(USER);
     this.clearCart();

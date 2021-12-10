@@ -11,7 +11,7 @@ const app = express();
 db.connect();
 // Setup Cors
 var corsOptions = { 
-  origin: ['http://localhost:4200', 'http://192.168.10.7:8080']
+  origin: ['http://localhost:4200', 'http://192.168.10.3:8080']
 }
 app.use(cors(corsOptions));
 app.use(express.json({ limit: "50mb" }));

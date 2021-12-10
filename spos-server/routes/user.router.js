@@ -3,6 +3,9 @@ const router   = express.Router();
 const bcrypt   = require("bcryptjs");
 const jwt      = require("jsonwebtoken");
 const User     = require('../models/user');
+const Products = require('../models/products');
+const Category = require('../models/category');
+const Sales    = require('../models/sales');
 const config   = require('../config/config');
 const admin_auth = require('../middleware/adminAuth'); // Login + Admin (Auth)
 const auth     = require('../middleware/auth');        // Login (Auth)
@@ -14,25 +17,32 @@ router.post("/login", async (req, res) => {
         const user = await User.findOne({ username });
         // Validate Passowrd
         if (user && (await bcrypt.compare(password, user.password))) {
-            // Create token
-            const token = jwt.sign(
-                { uid: user._id, username : user.username, role: user.role},
-                config.SERVER_TOKEN_KEY,
-                { expiresIn: "24h"}
-            );
-            let response = {
-                uid      : user._id,
-                bname    : user.bname,
-                bntn     : user.bntn,
-                username : user.username,
-                status   : user.status,
-                accounts : user.allowed,
-                token    : token,
-                role     : user.role,
-                receipt_setting : user.receipt_setting
-            };
-            // return new user
-            return res.status(200).json(response);
+            if(active_users[user._id] && active_users[user._id].count >= user.allowed){
+                return res.status(401).json({message: 'Account Limit Reached. Max of '+user.allowed+' user(s) can login from same account at same time.'});
+            }
+            if(user.status==='active'){
+                // Create token
+                const token = jwt.sign(
+                    { uid: user._id, username : user.username, role: user.role},
+                    config.SERVER_TOKEN_KEY,
+                    { expiresIn: "24h"}
+                );
+                let response = {
+                    uid      : user._id,
+                    bname    : user.bname,
+                    bntn     : user.bntn,
+                    username : user.username,
+                    status   : user.status,
+                    accounts : user.allowed,
+                    token    : token,
+                    role     : user.role,
+                    receipt_setting : user.receipt_setting
+                };
+                // return new user
+                return res.status(200).json(response);
+            }else{
+                return res.status(401).json({message: 'Account access blocked. Reason: '+user.status});
+            }
         }else{
             return res.status(401).json({message: 'Invalid Credentials'});
         }
@@ -160,14 +170,17 @@ router.get("/all", admin_auth, async (req, res) => {
 router.get("/delete", admin_auth,  async (req, res) => {
     const current_user = req.user;
     const id = req.query.id;
-    console.log(current_user.uid);
     if(current_user.uid === id){
         return res.status(401).json({message: 'Cannot delete its own account.'});
     }
-
     try {
+        let query = {uid : id};
         const users = await User.findByIdAndDelete(id);
+        const cats  = await Products.deleteMany(query);
+        const pros  = await Category.deleteMany(query);
+        const sales = await Sales.deleteMany(query);
         return res.status(200).json(users);
+
     } catch (error) {
         return res.status(401).json({message: error.message});
     }

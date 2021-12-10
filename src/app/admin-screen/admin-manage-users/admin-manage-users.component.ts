@@ -102,7 +102,7 @@ export class AdminManageUsersComponent implements OnInit {
   }
 
   deleteUser(id : any){
-    let r = confirm('Are you sure, you want to delete this user?');
+    let r = confirm('Are you sure, you want to delete this user? Do so will also delete user sales, categories & products along with the account');
     if(r){
       this.alert.spinner('Deleting');
       this.http.deleteUsers(id).subscribe(

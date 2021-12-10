@@ -16,10 +16,9 @@ export class SaleReceiptComponent implements AfterViewInit {
   public user : any;
   public settings : any = {};
   public current_date: any = null;
-
   constructor(private receipt : ReceiptService, private rendrer : Renderer2, private storage: StorageService) { 
     this.user = JSON.parse(this.storage.getUser());
-    this.settings = this.user.receipt_setting;
+    this.settings =  (this.user) ? this.user.receipt_setting : null;
 
     this.subscription = this.receipt.getReceipt().subscribe(
       (res : any) => {
@@ -47,7 +46,8 @@ export class SaleReceiptComponent implements AfterViewInit {
     );
   }
 
-  ngAfterViewInit(){}
+  ngAfterViewInit(){
+  }
 
   showModal(){
     if(this.current_date===null)
