@@ -6,6 +6,7 @@ const scheme = new mongoose.Schema({
   discount    : { type: String, default: 0 },
   total       : { type: String, required: true },
   paid        : { type: String, required: true },
+  paid_in     : { type: Object, required: true },
   method      : { type: String, required: true, lowercase: true },
   items       : { type: String, required: true},
   created_date: { type: String, default: new Date(Date.now()).toISOString() },

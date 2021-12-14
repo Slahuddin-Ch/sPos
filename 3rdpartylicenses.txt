@@ -195,6 +195,12 @@ engine.io-parser
 has-cors
 MIT
 
+jsbarcode
+MIT
+
+ngx-barcode
+MIT
+
 parseqs
 MIT
 The MIT License (MIT)

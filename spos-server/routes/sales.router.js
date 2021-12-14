@@ -48,9 +48,9 @@ router.post("/all", auth, async (req, res) => {
 
 router.post("/add", auth, async (req, res) => {
     const uid   = req?.user.uid || '';
-    const { total, discount, method, items, subtotal, paid } = req.body;
+    const { total, discount, method, items, subtotal, paid, paid_in } = req.body;
     try {
-        const sale = await Sales.create({ uid, total, discount, method, items, subtotal, paid });
+        const sale = await Sales.create({ uid, total, discount, method, items, subtotal, paid, paid_in });
         return res.status(200).json(sale);
     } catch (error) {
         return res.status(401).json({message : error.message});
