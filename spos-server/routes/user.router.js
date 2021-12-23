@@ -87,19 +87,24 @@ router.post("/register", admin_auth, async (req, res) => {
 });
 
 router.post("/update", admin_auth, async (req, res) => {
-    const {id, bname, bntn, email, username, role, status, allowed} = req.body;
+    const {id, bname, bntn, email, username, role, status, allowed, password} = req.body;
+    let query = {
+        bname  : bname, 
+        bntn   : bntn,
+        email  : email,
+        role   : role, 
+        status : status,
+        allowed : allowed,
+        username : username,
+    };
+    if(password!==''){
+        const encryptedPassword = await bcrypt.hash(password, 10);
+        query.password = encryptedPassword;
+    }
+
     try {
         // Update User
-        const user = await User.updateOne({_id : id},{
-            bname  : bname, 
-            bntn   : bntn,
-            email  : email,
-            role   : role, 
-            status : status,
-            allowed : allowed,
-            username : username,
-        });
-        console.log(user);
+        const user = await User.updateOne({_id : id}, query);
         return res.status(200).json(user);
     } catch (error) {
         if((error?.code && error.code===11000) || error?.errors){

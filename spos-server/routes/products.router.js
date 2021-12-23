@@ -112,4 +112,59 @@ router.delete("/remove", auth, (req, res) => {
     });
 });
 
+router.post("/import", auth, async (req, res) => {
+    const products = req.body;
+    const uid   = req?.user.uid || '';
+    if(typeof products === 'object' && products.length>0){
+        // name, price, barcode, category, tax
+        let success = 0;
+        let exist = 0;
+        try {
+            const forLoop = async _ => {
+                for (let index = 0; index < products.length; index++) {
+                    const item = products[index];
+                    let category = {uid: uid, name: item[3], tax: item[4]};
+                    let product  = {uid: uid, cat_id: '', name: item[0], code: item[2], price: item[1]};
+                    // FIND CATEGORY
+                    let cquery = {$and: [{uid: uid}, {name: category.name}]};
+                    var c = await Category.findOne(cquery);
+                    if(c){}
+                    else{
+                        c = await Category.create(category);
+                    }
+                    let pquery = {$and: [{code : product.code}, {uid : uid}]};
+                    const p = await Products.findOne(pquery); 
+                    if(p){
+                        exist++;
+                    }else{
+                        success++;
+                        product.cat_id = await c._id;
+                        await Products.create(product);
+                    }
+                }
+                return res.status(200).json({success : success, exist: exist});
+            }
+            forLoop();
+        } catch (error) {
+            return res.status(401).json(error.message);
+        }
+    }else{
+        return res.status(401).json('Invalid Data Sent. NOT VALID DATA')
+    }
+});
+
+async function findCategory(category, uid, callback){
+    try {
+        let query = {$and: [{uid: uid}, {name: category.name}]};
+        var cat = await Category.findOne(query);
+        if(cat){
+            callback(null, cat);
+        }else{
+            callback(null, null);
+        }
+    } catch (error) {
+        callback(error, null);
+    }
+}
+
 module.exports = router;
