@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const scheme = new mongoose.Schema({
   uid:   { type: String, required: true },
   name:  { type: String, required: true, lowercase: true},
+  important: { type: Boolean, default: false },
   tax:   { type: String, default: 0 },
 });
 

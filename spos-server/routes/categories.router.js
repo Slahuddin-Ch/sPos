@@ -49,6 +49,33 @@ router.put("/update", auth, async (req, res) => {
     });
 });
 
+router.put("/update-important", auth, async (req, res) => {
+    const {id, important} = req.body;
+    if(id==='') res.status(401).json({message: 'Cat ID not found'});
+    const uid   = req?.user.uid || '';
+    const updateQuery = {$set: {important : important}};
+    const findByQuery = {$and: [{_id: id}, {uid: uid}]};
+
+    const query = {$and: [{important: true}, {uid: uid}]};
+    Category.find(query, function(err, data){
+        if(err){
+            return res.status(500).json({message: 'Error Occured While Updating Category'});
+        }
+        if(data){
+            if(important===false || (important===true && data.length<2)){
+                Category.updateOne(findByQuery, updateQuery, function(err, data){
+                    if(err){
+                        return res.status(500).json({message: 'Error Occured While Updating Category'});
+                    }
+                    return res.status(200).json({message: 'Updated Successfully'});
+                });
+            }else{
+                return res.status(401).json({message: 'Max 2 categories are allowed to mark important.'});
+            }
+        }
+    });
+});
+
 router.delete("/remove", auth, async (req, res) => {
     const {id}  = req.query;
     const uid   = req?.user.uid || '';
