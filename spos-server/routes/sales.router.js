@@ -103,4 +103,38 @@ router.post("/delete", admin_auth, async (req, res) => {
     }
 });
 
+router.post("/delete-by-cat", admin_auth, async (req, res) => {
+    try {
+        const sale_ids    = req.body.sale_ids;
+        const cat_id      = req.body.cat_id;
+        const prices      = req.body.prices;
+
+        const query = { _id: { $in: sale_ids } };
+        var sales   = await Sales.find(query);
+        if(sales.length>0){
+            sales.every(async (sale, i) => {
+                var items = JSON.parse(sale.items);
+                for (let index = 0; index < items.length; index++) {
+                    var item = items[index];
+                    if(cat_id===item.cat_id && prices.includes(item.price)){
+                        sales[i].subtotal = parseFloat(sales[i].subtotal) - parseFloat(item.price);
+                        let disc = parseInt(sales[i].discount)/100;
+                        sales[i].total = (sales[i].subtotal - (sales[i].subtotal * disc))
+                        delete items[index];
+                    }
+                }
+                sales[i].items = JSON.stringify(items);
+                const query = {$set: sales[i]};
+                const findQuery = {_id : sales[i]._id};
+                await Sales.findOneAndUpdate(findQuery, query);
+                return true;
+            });
+        }
+        //const sales = await Sales.deleteMany(query);
+        return res.status(200).json(true)
+    } catch (error) {
+        return res.status(401).json({message : error.message});
+    }
+});
+
 module.exports = router;
